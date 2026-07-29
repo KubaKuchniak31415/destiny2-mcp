@@ -1,1 +1,9 @@
-export default { rules: { 'no-console': 'error' } };
+import tseslint from 'typescript-eslint';
+
+export default [
+  {
+    files: ['**/*.ts'],
+    languageOptions: { parser: tseslint.parser },
+    rules: { 'no-console': ['error', { allow: ['error'] }] },
+  },
+];
