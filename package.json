@@ -1,0 +1,29 @@
+{
+  "name": "destiny2-mcp",
+  "version": "1.0.0",
+  "description": "An MCP server for destiny 2 inventory management",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "dev": "concurrently \"tsc --watch\" \"node --watch --experimental-transform-types src/index.ts\"",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "concurrently": "^10.0.4",
+    "eslint": "^10.8.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.65.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.0.0",
+    "dotenv": "^17.4.2",
+    "zod": "^4.4.3"
+  }
+}
