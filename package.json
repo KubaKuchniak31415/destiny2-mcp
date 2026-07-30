@@ -12,7 +12,8 @@
   "scripts": {
     "tsc": "tsc",
     "dev": "concurrently \"tsc --watch\" \"node --watch --experimental-transform-types src/index.ts\"",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "node --test"
   },
   "devDependencies": {
     "@types/node": "^26.1.2",
@@ -23,7 +24,6 @@
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",
-    "dotenv": "^17.4.2",
     "zod": "^4.4.3"
   }
 }
