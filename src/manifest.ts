@@ -1,10 +1,26 @@
 import { createWriteStream } from "node:fs";
-import { rename, unlink } from "node:fs/promises";
+import { mkdir, readdir, readFile, rename, unlink, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 import { pipeline } from "node:stream/promises";
 import { Readable } from "node:stream";
+import { getManifest } from "./bungie.ts";
+import { extract } from "./unzip.ts";
 import * as logger from "./utilities/logger.ts";
 
-const download = async (url: string, dest: string): Promise<void> => {
+const BUNGIE_ROOT = 'https://www.bungie.net';
+
+// Resolved from the module, not the cwd: MCP clients launch the server from
+// wherever they happen to be.
+const MANIFEST_DIR = join(import.meta.dirname, '..', 'manifest');
+const STATE_PATH = join(MANIFEST_DIR, 'state.json');
+
+type State = {
+  version: string;
+  database: string;
+};
+
+const download = async (path: string, dest: string): Promise<void> => {
+  const url = `${BUNGIE_ROOT}${path}`;
   const tmp = `${dest}.part`;
   const res = await fetch(url);
   if (!res.ok) {
@@ -43,3 +59,49 @@ const download = async (url: string, dest: string): Promise<void> => {
     throw err;
   }
 }
+
+const readState = async (): Promise<State | null> => {
+  try {
+    return JSON.parse(await readFile(STATE_PATH, 'utf8')) as State;
+  } catch {
+    return null;
+  }
+};
+
+const removeStaleFiles = async (keep: string): Promise<void> => {
+  const entries = await readdir(MANIFEST_DIR);
+  for (const entry of entries) {
+    const path = join(MANIFEST_DIR, entry);
+    if (entry === 'state.json' || path === keep) continue;
+    await unlink(path).catch(() => {});
+  }
+};
+
+const ensureManifest = async (): Promise<string> => {
+  await mkdir(MANIFEST_DIR, { recursive: true });
+
+  const manifest = await getManifest();
+  const { version } = manifest;
+
+  const state = await readState();
+  if (state?.version === version) {
+    logger.print('info', `Manifest ${version} is already up to date`);
+    return state.database;
+  }
+
+  logger.print('info', `Updating manifest to ${version}`);
+
+  const archive = join(MANIFEST_DIR, `manifest-${version}.zip`);
+  const database = join(MANIFEST_DIR, `world-${version}.sqlite`);
+
+  await download(manifest.mobileWorldContentPaths.en, archive);
+  await extract(archive, database);
+  await unlink(archive).catch(() => {});
+
+  await writeFile(STATE_PATH, JSON.stringify({ version, database } satisfies State, null, 2));
+  await removeStaleFiles(database);
+
+  return database;
+};
+
+export { download, ensureManifest };

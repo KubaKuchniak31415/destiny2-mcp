@@ -12,11 +12,13 @@
   "scripts": {
     "tsc": "tsc",
     "dev": "concurrently \"tsc --watch\" \"node --watch --experimental-transform-types src/index.ts\"",
+    "random": "tsc && node --env-file=.env src/random.ts",
     "lint": "eslint .",
     "test": "node --test"
   },
   "devDependencies": {
     "@types/node": "^26.1.2",
+    "@types/yauzl": "^3.4.0",
     "concurrently": "^10.0.4",
     "eslint": "^10.8.0",
     "typescript": "^6.0.3",
@@ -24,6 +26,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",
+    "yauzl": "^3.4.0",
     "zod": "^4.4.3"
   }
 }
