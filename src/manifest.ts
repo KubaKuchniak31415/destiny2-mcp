@@ -13,6 +13,7 @@ const BUNGIE_ROOT = 'https://www.bungie.net';
 // wherever they happen to be.
 const MANIFEST_DIR = join(import.meta.dirname, '..', 'manifest');
 const STATE_PATH = join(MANIFEST_DIR, 'state.json');
+const SIDECAR_PATH = join(MANIFEST_DIR, 'sidecar.sqlite')
 
 type State = {
   version: string;
@@ -71,8 +72,11 @@ const readState = async (): Promise<State | null> => {
 const removeStaleFiles = async (keep: string): Promise<void> => {
   const entries = await readdir(MANIFEST_DIR);
   for (const entry of entries) {
+    const keepPaths = [STATE_PATH, keep, SIDECAR_PATH];
     const path = join(MANIFEST_DIR, entry);
-    if (entry === 'state.json' || path === keep) continue;
+    if (keepPaths.includes(path)) {
+      continue;
+    }
     await unlink(path).catch(() => {});
   }
 };
