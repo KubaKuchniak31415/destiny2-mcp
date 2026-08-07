@@ -1,0 +1,1956 @@
+{
+  "weapon": {
+    "hash": 4184168210,
+    "displayProperties": {
+      "name": "Fatebringer"
+    },
+    "index": 33334,
+    "itemTypeDisplayName": "Hand Cannon",
+    "inventory": {
+      "tierType": 5
+    },
+    "sockets": {
+      "socketCategories": [
+        {
+          "socketCategoryHash": 3956125808,
+          "socketIndexes": [
+            0
+          ]
+        },
+        {
+          "socketCategoryHash": 4241085061,
+          "socketIndexes": [
+            1,
+            2,
+            3,
+            4,
+            8,
+            9
+          ]
+        },
+        {
+          "socketCategoryHash": 2048875504,
+          "socketIndexes": [
+            5,
+            14,
+            15
+          ]
+        },
+        {
+          "socketCategoryHash": 2685412949,
+          "socketIndexes": [
+            6,
+            7,
+            11,
+            12,
+            13
+          ]
+        },
+        {
+          "socketCategoryHash": 3583996951,
+          "socketIndexes": [
+            10
+          ]
+        }
+      ],
+      "socketEntries": [
+        {
+          "reusablePlugSetHash": 1
+        },
+        {
+          "randomizedPlugSetHash": 2044988252
+        },
+        {
+          "randomizedPlugSetHash": 1942462581
+        },
+        {
+          "randomizedPlugSetHash": 1359881065
+        },
+        {
+          "randomizedPlugSetHash": 1178222287
+        },
+        {
+          "reusablePlugSetHash": 236342179
+        },
+        {
+          "reusablePlugSetHash": 1542054357
+        },
+        {
+          "reusablePlugSetHash": 2326575037
+        },
+        {
+          "reusablePlugSetHash": 215
+        },
+        {
+          "reusablePlugSetHash": 1595611752
+        },
+        {},
+        {
+          "reusablePlugSetHash": 3008236044
+        },
+        {
+          "reusablePlugSetHash": 819137548
+        },
+        {
+          "reusablePlugSetHash": 2432089606
+        },
+        {
+          "reusablePlugSetHash": 177
+        },
+        {
+          "reusablePlugSetHash": 2213274916
+        }
+      ]
+    }
+  },
+  "plugSets": {
+    "215": {
+      "reusablePlugItems": [
+        {
+          "plugItemHash": 2542427991,
+          "currentlyCanRoll": true
+        }
+      ]
+    },
+    "1178222287": {
+      "reusablePlugItems": [
+        {
+          "plugItemHash": 4104185692,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 699525795,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3824105627,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1089671869,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 4049631843,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 2720533289,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 555281244,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1226351311,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1546142478,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3007133316,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3719974635,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1183436451,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 496047945,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 859780267,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3042219245,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 332733060,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3251326479,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 983853954,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 2503665585,
+          "currentlyCanRoll": true
+        }
+      ]
+    },
+    "1359881065": {
+      "reusablePlugItems": [
+        {
+          "plugItemHash": 1774574192,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 47981717,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3619207468,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3418782618,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3938834702,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3891536761,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3038247973,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1517798362,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 2360347339,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 777774560,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1370847713,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3198323828,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1563455254,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3416609154,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1549370717,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 64866129,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1011551830,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 4096144819,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 2503665585,
+          "currentlyCanRoll": true
+        }
+      ]
+    },
+    "1595611752": {
+      "reusablePlugItems": [
+        {
+          "plugItemHash": 3915764595,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3915764594,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3915764593,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1187045864,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1690059054,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 16638393,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1124054883,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3624435060,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 16638392,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 2617715132,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 2617715133,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3349747415,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 2302094943,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 905869860,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 2240097604,
+          "currentlyCanRoll": true
+        }
+      ]
+    },
+    "1942462581": {
+      "reusablePlugItems": [
+        {
+          "plugItemHash": 3142289711,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1087426260,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 106909392,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 2420895100,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3177308360,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1431678320,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3230963543,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3267421167,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1065371964,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1783397184,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1890997540,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1002206008,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 550838496,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1709045111,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1885400500,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 679225683,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1968497646,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 4134353779,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 791862061,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1561002382,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1968098204,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1807273211,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 2172195298,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3678323611,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1488599449,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 494745090,
+          "currentlyCanRoll": true
+        }
+      ]
+    },
+    "2044988252": {
+      "reusablePlugItems": [
+        {
+          "plugItemHash": 839105230,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3661387068,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 4090651448,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1467527085,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1840239774,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 202670084,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3250034553,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1392496348,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1482024992,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3048246338,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3399528164,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 111235976,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1932356121,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1124871858,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1871180748,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1147230557,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3966296580,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 2860123632,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1047830412,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1332244541,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 3311319252,
+          "currentlyCanRoll": true
+        },
+        {
+          "plugItemHash": 1987021001,
+          "currentlyCanRoll": true
+        }
+      ]
+    }
+  },
+  "items": {
+    "16638392": {
+      "hash": 16638392,
+      "displayProperties": {
+        "name": "Solstice Memento Tracker"
+      },
+      "index": 15187,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "v400.plugs.weapons.masterworks.trackers"
+      }
+    },
+    "16638393": {
+      "hash": 16638393,
+      "displayProperties": {
+        "name": "Monolithic Memento Tracker"
+      },
+      "index": 15186,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "v400.plugs.weapons.masterworks.trackers"
+      }
+    },
+    "47981717": {
+      "hash": 47981717,
+      "displayProperties": {
+        "name": "Opening Shot"
+      },
+      "index": 4327,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "64866129": {
+      "hash": 64866129,
+      "displayProperties": {
+        "name": "Explosive Payload"
+      },
+      "index": 4305,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "106909392": {
+      "hash": 106909392,
+      "displayProperties": {
+        "name": "Tactical Mag"
+      },
+      "index": 4606,
+      "itemTypeDisplayName": "Magazine",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "111235976": {
+      "hash": 111235976,
+      "displayProperties": {
+        "name": "Corkscrew Rifling"
+      },
+      "index": 4236,
+      "itemTypeDisplayName": "Enhanced Barrel",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "202670084": {
+      "hash": 202670084,
+      "displayProperties": {
+        "name": "Full Bore"
+      },
+      "index": 4243,
+      "itemTypeDisplayName": "Barrel",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "332733060": {
+      "hash": 332733060,
+      "displayProperties": {
+        "name": "Precision Instrument"
+      },
+      "index": 14130,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "494745090": {
+      "hash": 494745090,
+      "displayProperties": {
+        "name": "High-Caliber Rounds"
+      },
+      "index": 4598,
+      "itemTypeDisplayName": "Enhanced Magazine",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "496047945": {
+      "hash": 496047945,
+      "displayProperties": {
+        "name": "Elemental Honing"
+      },
+      "index": 33208,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "550838496": {
+      "hash": 550838496,
+      "displayProperties": {
+        "name": "Alloy Magazine"
+      },
+      "index": 4588,
+      "itemTypeDisplayName": "Enhanced Magazine",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "555281244": {
+      "hash": 555281244,
+      "displayProperties": {
+        "name": "Precision Instrument"
+      },
+      "index": 14129,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "679225683": {
+      "hash": 679225683,
+      "displayProperties": {
+        "name": "Light Mag"
+      },
+      "index": 6533,
+      "itemTypeDisplayName": "Magazine",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "699525795": {
+      "hash": 699525795,
+      "displayProperties": {
+        "name": "Eye of the Storm"
+      },
+      "index": 7978,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "777774560": {
+      "hash": 777774560,
+      "displayProperties": {
+        "name": "Osmosis"
+      },
+      "index": 9440,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "791862061": {
+      "hash": 791862061,
+      "displayProperties": {
+        "name": "Assault Mag"
+      },
+      "index": 4602,
+      "itemTypeDisplayName": "Magazine",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "839105230": {
+      "hash": 839105230,
+      "displayProperties": {
+        "name": "Arrowhead Brake"
+      },
+      "index": 4229,
+      "itemTypeDisplayName": "Barrel",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "859780267": {
+      "hash": 859780267,
+      "displayProperties": {
+        "name": "One for All"
+      },
+      "index": 10003,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "905869860": {
+      "hash": 905869860,
+      "displayProperties": {
+        "name": "Kill Tracker"
+      },
+      "index": 6637,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "v400.plugs.weapons.masterworks.trackers"
+      }
+    },
+    "983853954": {
+      "hash": 983853954,
+      "displayProperties": {
+        "name": "Binary Orbit"
+      },
+      "index": 33571,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "1002206008": {
+      "hash": 1002206008,
+      "displayProperties": {
+        "name": "Steady Rounds"
+      },
+      "index": 4605,
+      "itemTypeDisplayName": "Enhanced Magazine",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "1011551830": {
+      "hash": 1011551830,
+      "displayProperties": {
+        "name": "Stopping Power"
+      },
+      "index": 34754,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "1047830412": {
+      "hash": 1047830412,
+      "displayProperties": {
+        "name": "Full Choke"
+      },
+      "index": 4241,
+      "itemTypeDisplayName": "Barrel",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "1065371964": {
+      "hash": 1065371964,
+      "displayProperties": {
+        "name": "Appended Mag"
+      },
+      "index": 4590,
+      "itemTypeDisplayName": "Enhanced Magazine",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "1087426260": {
+      "hash": 1087426260,
+      "displayProperties": {
+        "name": "Appended Mag"
+      },
+      "index": 4589,
+      "itemTypeDisplayName": "Magazine",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "1089671869": {
+      "hash": 1089671869,
+      "displayProperties": {
+        "name": "Elemental Honing"
+      },
+      "index": 33207,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "1124054883": {
+      "hash": 1124054883,
+      "displayProperties": {
+        "name": "Dawning Memento Tracker"
+      },
+      "index": 14426,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "v400.plugs.weapons.masterworks.trackers"
+      }
+    },
+    "1124871858": {
+      "hash": 1124871858,
+      "displayProperties": {
+        "name": "Fluted Barrel"
+      },
+      "index": 4240,
+      "itemTypeDisplayName": "Enhanced Barrel",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "1147230557": {
+      "hash": 1147230557,
+      "displayProperties": {
+        "name": "Hammer-Forged Rifling"
+      },
+      "index": 4246,
+      "itemTypeDisplayName": "Enhanced Barrel",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "1183436451": {
+      "hash": 1183436451,
+      "displayProperties": {
+        "name": "Firefly"
+      },
+      "index": 10913,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "1187045864": {
+      "hash": 1187045864,
+      "displayProperties": {
+        "name": "Games Memento Tracker"
+      },
+      "index": 13001,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "v400.plugs.weapons.masterworks.trackers"
+      }
+    },
+    "1226351311": {
+      "hash": 1226351311,
+      "displayProperties": {
+        "name": "All-Star"
+      },
+      "index": 34749,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "1332244541": {
+      "hash": 1332244541,
+      "displayProperties": {
+        "name": "Rifled Barrel"
+      },
+      "index": 4250,
+      "itemTypeDisplayName": "Barrel",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "1370847713": {
+      "hash": 1370847713,
+      "displayProperties": {
+        "name": "Opening Shot"
+      },
+      "index": 4328,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "1392496348": {
+      "hash": 1392496348,
+      "displayProperties": {
+        "name": "Polygonal Rifling"
+      },
+      "index": 4248,
+      "itemTypeDisplayName": "Barrel",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "1431678320": {
+      "hash": 1431678320,
+      "displayProperties": {
+        "name": "Alloy Magazine"
+      },
+      "index": 4587,
+      "itemTypeDisplayName": "Magazine",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "1467527085": {
+      "hash": 1467527085,
+      "displayProperties": {
+        "name": "Extended Barrel"
+      },
+      "index": 4237,
+      "itemTypeDisplayName": "Barrel",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "1482024992": {
+      "hash": 1482024992,
+      "displayProperties": {
+        "name": "Smallbore"
+      },
+      "index": 4252,
+      "itemTypeDisplayName": "Barrel",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "1488599449": {
+      "hash": 1488599449,
+      "displayProperties": {
+        "name": "Assault Mag"
+      },
+      "index": 4603,
+      "itemTypeDisplayName": "Enhanced Magazine",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "1517798362": {
+      "hash": 1517798362,
+      "displayProperties": {
+        "name": "Stopping Power"
+      },
+      "index": 34753,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "1546142478": {
+      "hash": 1546142478,
+      "displayProperties": {
+        "name": "Binary Orbit"
+      },
+      "index": 33570,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "1549370717": {
+      "hash": 1549370717,
+      "displayProperties": {
+        "name": "Kinetic Tremors"
+      },
+      "index": 13442,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "1561002382": {
+      "hash": 1561002382,
+      "displayProperties": {
+        "name": "High-Caliber Rounds"
+      },
+      "index": 4597,
+      "itemTypeDisplayName": "Magazine",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "1563455254": {
+      "hash": 1563455254,
+      "displayProperties": {
+        "name": "Rewind Rounds"
+      },
+      "index": 10919,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "1690059054": {
+      "hash": 1690059054,
+      "displayProperties": {
+        "name": "Lost Memento Tracker"
+      },
+      "index": 14176,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "v400.plugs.weapons.masterworks.trackers"
+      }
+    },
+    "1709045111": {
+      "hash": 1709045111,
+      "displayProperties": {
+        "name": "Flared Magwell"
+      },
+      "index": 4596,
+      "itemTypeDisplayName": "Enhanced Magazine",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "1774574192": {
+      "hash": 1774574192,
+      "displayProperties": {
+        "name": "Osmosis"
+      },
+      "index": 9439,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "1783397184": {
+      "hash": 1783397184,
+      "displayProperties": {
+        "name": "Tactical Mag"
+      },
+      "index": 4607,
+      "itemTypeDisplayName": "Enhanced Magazine",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "1807273211": {
+      "hash": 1807273211,
+      "displayProperties": {
+        "name": "Light Mag"
+      },
+      "index": 6534,
+      "itemTypeDisplayName": "Enhanced Magazine",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "1840239774": {
+      "hash": 1840239774,
+      "displayProperties": {
+        "name": "Fluted Barrel"
+      },
+      "index": 4239,
+      "itemTypeDisplayName": "Barrel",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "1871180748": {
+      "hash": 1871180748,
+      "displayProperties": {
+        "name": "Full Bore"
+      },
+      "index": 4244,
+      "itemTypeDisplayName": "Enhanced Barrel",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "1885400500": {
+      "hash": 1885400500,
+      "displayProperties": {
+        "name": "Ricochet Rounds"
+      },
+      "index": 4600,
+      "itemTypeDisplayName": "Magazine",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "1890997540": {
+      "hash": 1890997540,
+      "displayProperties": {
+        "name": "Extended Mag"
+      },
+      "index": 4594,
+      "itemTypeDisplayName": "Enhanced Magazine",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "1932356121": {
+      "hash": 1932356121,
+      "displayProperties": {
+        "name": "Extended Barrel"
+      },
+      "index": 4238,
+      "itemTypeDisplayName": "Enhanced Barrel",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "1968098204": {
+      "hash": 1968098204,
+      "displayProperties": {
+        "name": "Ricochet Rounds"
+      },
+      "index": 4601,
+      "itemTypeDisplayName": "Enhanced Magazine",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "1968497646": {
+      "hash": 1968497646,
+      "displayProperties": {
+        "name": "Armor-Piercing Rounds"
+      },
+      "index": 4591,
+      "itemTypeDisplayName": "Magazine",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "1987021001": {
+      "hash": 1987021001,
+      "displayProperties": {
+        "name": "Rifled Barrel"
+      },
+      "index": 4251,
+      "itemTypeDisplayName": "Enhanced Barrel",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "2172195298": {
+      "hash": 2172195298,
+      "displayProperties": {
+        "name": "Armor-Piercing Rounds"
+      },
+      "index": 4592,
+      "itemTypeDisplayName": "Enhanced Magazine",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "2240097604": {
+      "hash": 2240097604,
+      "displayProperties": {
+        "name": "Kill Tracker"
+      },
+      "index": 6638,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "v400.plugs.weapons.masterworks.trackers"
+      }
+    },
+    "2302094943": {
+      "hash": 2302094943,
+      "displayProperties": {
+        "name": "Kill Tracker"
+      },
+      "index": 6636,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "v400.plugs.weapons.masterworks.trackers"
+      }
+    },
+    "2360347339": {
+      "hash": 2360347339,
+      "displayProperties": {
+        "name": "Impromptu Ammunition"
+      },
+      "index": 33574,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "2420895100": {
+      "hash": 2420895100,
+      "displayProperties": {
+        "name": "Extended Mag"
+      },
+      "index": 4593,
+      "itemTypeDisplayName": "Magazine",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "2503665585": {
+      "hash": 2503665585,
+      "displayProperties": {
+        "name": "Empty Traits Socket"
+      },
+      "index": 1764,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "crafting.recipes.empty_socket"
+      }
+    },
+    "2542427991": {
+      "hash": 2542427991,
+      "displayProperties": {
+        "name": "Empty Origins Socket"
+      },
+      "index": 1768,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "crafting.recipes.empty_socket"
+      }
+    },
+    "2617715132": {
+      "hash": 2617715132,
+      "displayProperties": {
+        "name": "Garden of Salvation Memento Tracker"
+      },
+      "index": 15646,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "v400.plugs.weapons.masterworks.trackers"
+      }
+    },
+    "2617715133": {
+      "hash": 2617715133,
+      "displayProperties": {
+        "name": "Iron Banner Memento Tracker"
+      },
+      "index": 15647,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "v400.plugs.weapons.masterworks.trackers"
+      }
+    },
+    "2720533289": {
+      "hash": 2720533289,
+      "displayProperties": {
+        "name": "Magnificent Howl"
+      },
+      "index": 6564,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "2860123632": {
+      "hash": 2860123632,
+      "displayProperties": {
+        "name": "Smallbore"
+      },
+      "index": 4253,
+      "itemTypeDisplayName": "Enhanced Barrel",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "3007133316": {
+      "hash": 3007133316,
+      "displayProperties": {
+        "name": "Frenzy"
+      },
+      "index": 10619,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "3038247973": {
+      "hash": 3038247973,
+      "displayProperties": {
+        "name": "Explosive Payload"
+      },
+      "index": 4304,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "3042219245": {
+      "hash": 3042219245,
+      "displayProperties": {
+        "name": "Magnificent Howl"
+      },
+      "index": 6565,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "3048246338": {
+      "hash": 3048246338,
+      "displayProperties": {
+        "name": "Arrowhead Brake"
+      },
+      "index": 4230,
+      "itemTypeDisplayName": "Enhanced Barrel",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "3142289711": {
+      "hash": 3142289711,
+      "displayProperties": {
+        "name": "Accurized Rounds"
+      },
+      "index": 4585,
+      "itemTypeDisplayName": "Magazine",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "3177308360": {
+      "hash": 3177308360,
+      "displayProperties": {
+        "name": "Steady Rounds"
+      },
+      "index": 4604,
+      "itemTypeDisplayName": "Magazine",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "3198323828": {
+      "hash": 3198323828,
+      "displayProperties": {
+        "name": "Keep Away"
+      },
+      "index": 13434,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "3230963543": {
+      "hash": 3230963543,
+      "displayProperties": {
+        "name": "Flared Magwell"
+      },
+      "index": 4595,
+      "itemTypeDisplayName": "Magazine",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "3250034553": {
+      "hash": 3250034553,
+      "displayProperties": {
+        "name": "Hammer-Forged Rifling"
+      },
+      "index": 4245,
+      "itemTypeDisplayName": "Barrel",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "3251326479": {
+      "hash": 3251326479,
+      "displayProperties": {
+        "name": "All-Star"
+      },
+      "index": 34750,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "3267421167": {
+      "hash": 3267421167,
+      "displayProperties": {
+        "name": "Accurized Rounds"
+      },
+      "index": 4586,
+      "itemTypeDisplayName": "Enhanced Magazine",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "3311319252": {
+      "hash": 3311319252,
+      "displayProperties": {
+        "name": "Full Choke"
+      },
+      "index": 4242,
+      "itemTypeDisplayName": "Enhanced Barrel",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "3349747415": {
+      "hash": 3349747415,
+      "displayProperties": {
+        "name": "Vault of Glass Memento Tracker"
+      },
+      "index": 16259,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "v400.plugs.weapons.masterworks.trackers"
+      }
+    },
+    "3399528164": {
+      "hash": 3399528164,
+      "displayProperties": {
+        "name": "Chambered Compensator"
+      },
+      "index": 4234,
+      "itemTypeDisplayName": "Enhanced Barrel",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "3416609154": {
+      "hash": 3416609154,
+      "displayProperties": {
+        "name": "To the Pain"
+      },
+      "index": 15227,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "3418782618": {
+      "hash": 3418782618,
+      "displayProperties": {
+        "name": "Rewind Rounds"
+      },
+      "index": 10918,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "3619207468": {
+      "hash": 3619207468,
+      "displayProperties": {
+        "name": "Keep Away"
+      },
+      "index": 13433,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "3624435060": {
+      "hash": 3624435060,
+      "displayProperties": {
+        "name": "Champion Memento Tracker"
+      },
+      "index": 14865,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "v400.plugs.weapons.masterworks.trackers"
+      }
+    },
+    "3661387068": {
+      "hash": 3661387068,
+      "displayProperties": {
+        "name": "Chambered Compensator"
+      },
+      "index": 4233,
+      "itemTypeDisplayName": "Barrel",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "3678323611": {
+      "hash": 3678323611,
+      "displayProperties": {
+        "name": "Drop Mag"
+      },
+      "index": 4609,
+      "itemTypeDisplayName": "Magazine",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    },
+    "3719974635": {
+      "hash": 3719974635,
+      "displayProperties": {
+        "name": "Eye of the Storm"
+      },
+      "index": 7979,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "3824105627": {
+      "hash": 3824105627,
+      "displayProperties": {
+        "name": "Firefly"
+      },
+      "index": 10912,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "3891536761": {
+      "hash": 3891536761,
+      "displayProperties": {
+        "name": "Kinetic Tremors"
+      },
+      "index": 13441,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "3915764593": {
+      "hash": 3915764593,
+      "displayProperties": {
+        "name": "Gambit Memento Tracker"
+      },
+      "index": 11750,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "v400.plugs.weapons.masterworks.trackers"
+      }
+    },
+    "3915764594": {
+      "hash": 3915764594,
+      "displayProperties": {
+        "name": "Nightfall Memento Tracker"
+      },
+      "index": 11749,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "v400.plugs.weapons.masterworks.trackers"
+      }
+    },
+    "3915764595": {
+      "hash": 3915764595,
+      "displayProperties": {
+        "name": "Trials Memento Tracker"
+      },
+      "index": 11748,
+      "itemTypeDisplayName": "",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "v400.plugs.weapons.masterworks.trackers"
+      }
+    },
+    "3938834702": {
+      "hash": 3938834702,
+      "displayProperties": {
+        "name": "To the Pain"
+      },
+      "index": 15226,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "3966296580": {
+      "hash": 3966296580,
+      "displayProperties": {
+        "name": "Polygonal Rifling"
+      },
+      "index": 4249,
+      "itemTypeDisplayName": "Enhanced Barrel",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "4049631843": {
+      "hash": 4049631843,
+      "displayProperties": {
+        "name": "One for All"
+      },
+      "index": 10002,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "4090651448": {
+      "hash": 4090651448,
+      "displayProperties": {
+        "name": "Corkscrew Rifling"
+      },
+      "index": 4235,
+      "itemTypeDisplayName": "Barrel",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "barrels"
+      }
+    },
+    "4096144819": {
+      "hash": 4096144819,
+      "displayProperties": {
+        "name": "Impromptu Ammunition"
+      },
+      "index": 33575,
+      "itemTypeDisplayName": "Enhanced Trait",
+      "inventory": {
+        "tierType": 3
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "4104185692": {
+      "hash": 4104185692,
+      "displayProperties": {
+        "name": "Frenzy"
+      },
+      "index": 10618,
+      "itemTypeDisplayName": "Trait",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "frames"
+      }
+    },
+    "4134353779": {
+      "hash": 4134353779,
+      "displayProperties": {
+        "name": "Drop Mag"
+      },
+      "index": 4608,
+      "itemTypeDisplayName": "Magazine",
+      "inventory": {
+        "tierType": 2
+      },
+      "plug": {
+        "plugCategoryIdentifier": "magazines"
+      }
+    }
+  }
+}

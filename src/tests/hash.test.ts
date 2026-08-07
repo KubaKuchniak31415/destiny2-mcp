@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { toDbId, toHash, type DbId } from '../utilities/hash.ts';
 
 // Bungie's manifest hashes are unsigned 32-bit; the SQLite manifest stores them
-// as signed 32-bit primary keys. These are the same bit pattern read two ways.
+// as signed 32-bit primary keys.
 const CASES: ReadonlyArray<{ hash: number; dbId: number; why: string }> = [
   { hash: 0, dbId: 0, why: 'trivial' },
   { hash: 0x7fffffff, dbId: 2147483647, why: 'last value that must not change' },

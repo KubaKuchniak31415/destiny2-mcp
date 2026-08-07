@@ -28,8 +28,8 @@ const bungieFetch = async <T extends z.ZodType>(path: string, schema: T): Promis
   const { ErrorCode, ErrorStatus, Message} = envelope.data;
   
   if (ErrorCode !== 1) {
-    logger.print('error', `Error fetching ${path}: ${ErrorCode} - ${ErrorStatus}`);
-    throw new Error(`Error fetching ${path}: ${ErrorCode} - ${ErrorStatus}`);
+    logger.print('error', `Error fetching ${path}: ${ErrorCode} - ${ErrorStatus} - ${Message}`);
+    throw new Error(`Error fetching ${path}: ${ErrorCode} - ${ErrorStatus} - ${Message}`);
   }
 
   const payload = schema.safeParse(envelope.data.Response);

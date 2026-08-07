@@ -290,4 +290,5 @@ const buildWeaponIndex = async (indexPath: string, manifestPath: string): Promis
   } 
 }
 
-export { buildWeaponIndex };
+export { buildWeaponIndex, extractPerkColumns, createExtractStats };
+export type { Lookup, ItemDef, PlugSetDef, PerkColumn, ExtractStats };
