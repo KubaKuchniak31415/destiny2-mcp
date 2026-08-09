@@ -2,20 +2,10 @@ import { DatabaseSync, StatementSync } from "node:sqlite";
 import * as logger from "./utilities/logger.ts";
 import { toDbId } from "./utilities/hash.ts";
 import { rename, unlink, } from "node:fs/promises";
+import type { ItemDef, Perk, PerkColumn } from "./types.ts";
 
 
-type SocketCategory = {socketCategoryHash: number; socketIndexes: number[]}
 
-// SocketEntries are the definitions of a specific socket on an item
-// The randomized and reusable plugsets are essentially the perk pool for each socket say barrel, mag, perk1 and perk2
-// A socket generally has one or the other never both i assume randomized is for rng rolls in perk1, perk2 and reusable is for mags etc.
-type SocketEntry = {
-  randomizedPlugSetHash?: number;
-  reusablePlugSetHash?: number;
-}
-
-type Perk = {hash: number; name: string; isEnhanced: boolean}
-type PerkColumn = {columnIndex: number; perks: Perk[]}
 
 // The socket category that contains weapon perks
 const WEAPON_PERKS_CATEGORY = 4241085061;
@@ -30,15 +20,7 @@ const EXCLUDED_PLUG_CATEGORIES = new Set([
   ]);
 
 
-type ItemDef = {
-  hash: number;
-  displayProperties: {name: string};
-  itemTypeDisplayName?: string;
-  inventory?: {tierType: number};
-  plug?: {plugCategoryIdentifier: string};
-  sockets?: {socketEntries: SocketEntry[]; socketCategories: SocketCategory[]};
-  index: number;
-}
+
 
 // The plugset definition is basically the perk pool for a given socket. Optional boolean to see if perk can be rolled.
 // Counter-intuitively if the boolean isnt present it means the perk can be rolled

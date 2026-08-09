@@ -17,9 +17,9 @@
     "test": "node --test"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/node": "^26.1.2",
     "@types/yauzl": "^3.4.0",
-    "concurrently": "^10.0.4",
     "eslint": "^10.8.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.65.0"

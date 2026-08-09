@@ -13,3 +13,29 @@ export const manifestSchema = z.object({
 });
 
 export type Manifest = z.infer<typeof manifestSchema>;
+
+// SocketEntries are the definitions of a specific socket on an item
+// The randomized and reusable plugsets are essentially the perk pool for each socket say barrel, mag, perk1 and perk2
+// A socket generally has one or the other never both i assume randomized is for rng rolls in perk1, perk2 and reusable is for mags etc.
+type SocketEntry = {
+  randomizedPlugSetHash?: number;
+  reusablePlugSetHash?: number;
+}
+
+type SocketCategory = {socketCategoryHash: number; socketIndexes: number[]}
+
+export type ItemDef = {
+  hash: number;
+  displayProperties: {name: string};
+  itemTypeDisplayName?: string;
+  inventory?: {tierType: number};
+  plug?: {plugCategoryIdentifier: string};
+  sockets?: {socketEntries: SocketEntry[]; socketCategories: SocketCategory[]};
+  index: number;
+}
+
+
+export type Perk = {hash: number; name: string; isEnhanced: boolean}
+export type PerkColumn = {columnIndex: number; perks: Perk[]}
+
+export type Weapon = {hash: number; name: string; type: string; tierType: number | null}

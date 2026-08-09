@@ -1,13 +1,17 @@
+// @ts-check
+
+import js from '@eslint/js';
+import { defineConfig, globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default [
+export default defineConfig([
+  globalIgnores(['dist/**', 'manifest/**']),
   {
     files: ['**/*.ts'],
-    plugins: { '@typescript-eslint': tseslint.plugin },
-    languageOptions: { parser: tseslint.parser },
-    rules: 
-    { 'no-console': ['error', { allow: ['error'] }],
-      'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }]},
+    extends: [js.configs.recommended, tseslint.configs.recommended],
+    rules: {
+      'no-console': ['error', { allow: ['error'] }],
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    },
   },
-];
+]);

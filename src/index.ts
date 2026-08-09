@@ -3,6 +3,8 @@ import { serveStdio } from "@modelcontextprotocol/server/stdio";
 import {getManifestVersion} from "./bungie.ts";
 import * as z from "zod/v4";
 import { print } from "./utilities/logger.ts";
+import { getIndex } from "./db.ts";
+import { registerWeaponTools } from "./tools/weapons.ts";
 
 const createServer = (): McpServer => {
   const API_KEY = process.env.BUNGIE_API_KEY;
@@ -16,6 +18,8 @@ const createServer = (): McpServer => {
     version: "0.1.0",
   })
 
+  registerWeaponTools(server);
+
   server.registerTool("getManifestVersion", {
     description: "Fetches the current Destiny 2 manifest version from Bungie.net",
     inputSchema: z.object({})},
@@ -28,4 +32,5 @@ const createServer = (): McpServer => {
   return server;
 }
 
+void getIndex();
 serveStdio(createServer);
