@@ -2,16 +2,11 @@ import {McpServer} from "@modelcontextprotocol/server";
 import { serveStdio } from "@modelcontextprotocol/server/stdio";
 import {getManifestVersion} from "./bungie.ts";
 import * as z from "zod/v4";
-import { print } from "./utilities/logger.ts";
 import { getIndex } from "./db.ts";
 import { registerWeaponTools } from "./tools/weapons.ts";
 
 const createServer = (): McpServer => {
-  const API_KEY = process.env.BUNGIE_API_KEY;
-  if (!API_KEY) {
-    print('error', 'BUNGIE_API_KEY environment variable is not set.');
-    throw new Error('BUNGIE_API_KEY environment variable is not set.');
-  }
+  //const API_KEY = process.env.BUNGIE_API_KEY;
 
   const server = new McpServer({
     name: "destiny2-mcp",

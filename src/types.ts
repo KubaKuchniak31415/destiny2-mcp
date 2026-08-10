@@ -39,3 +39,12 @@ export type Perk = {hash: number; name: string; isEnhanced: boolean}
 export type PerkColumn = {columnIndex: number; perks: Perk[]}
 
 export type Weapon = {hash: number; name: string; type: string; tierType: number | null}
+
+export const tokenSchema = z.object({
+  access_token: z.string(),
+  refresh_token: z.string(),
+  expires_at_seconds: z.number(),
+  refresh_expires_at_seconds: z.number()
+});
+
+export type Token = z.infer<typeof tokenSchema>;

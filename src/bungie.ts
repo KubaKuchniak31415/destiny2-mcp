@@ -1,6 +1,6 @@
 import * as logger from './utilities/logger.ts';
 import * as z from 'zod/v4';
-import BUNGIE_API_KEY from './config.ts';
+import { BUNGIE_API_KEY } from './config.ts';
 import { envelopeSchema, manifestSchema, type Manifest } from './types.ts';
 
 const BUNGIE_ROOT = 'https://www.bungie.net/Platform';
