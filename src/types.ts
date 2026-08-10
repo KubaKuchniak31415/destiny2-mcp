@@ -40,11 +40,23 @@ export type PerkColumn = {columnIndex: number; perks: Perk[]}
 
 export type Weapon = {hash: number; name: string; type: string; tierType: number | null}
 
+export const tokenResponseSchema = z.object({
+  access_token: z.string(),
+  token_type: z.string(),
+  refresh_token: z.string(),
+  expires_in: z.number(),
+  refresh_expires_in: z.number(),
+  membership_id: z.string(),
+});
+
+export type TokenResponse = z.infer<typeof tokenResponseSchema>;
+
 export const tokenSchema = z.object({
   access_token: z.string(),
   refresh_token: z.string(),
   expires_at_seconds: z.number(),
-  refresh_expires_at_seconds: z.number()
+  refresh_expires_at_seconds: z.number(),
+  membership_id: z.string(),
 });
 
 export type Token = z.infer<typeof tokenSchema>;

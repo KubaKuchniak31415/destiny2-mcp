@@ -14,7 +14,7 @@
     "dev": "concurrently \"tsc --watch\" \"node --watch --experimental-transform-types src/index.ts\"",
     "random": "tsc && node --env-file=.env src/random.ts",
     "lint": "eslint .",
-    "test": "node --test"
+    "test": "node --test --env-file=.env.test"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
