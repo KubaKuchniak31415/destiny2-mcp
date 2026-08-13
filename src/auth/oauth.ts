@@ -2,13 +2,13 @@ import { BUNGIE_CLIENT_ID, BUNGIE_CLIENT_SECRET, BUNGIE_REDIRECT_URI } from '../
 import type {Token, TokenResponse} from '../types.ts';
 import { tokenResponseSchema } from '../types.ts';
 import * as z from 'zod/v4';
+import { BUNGIE_API_KEY } from '../config.ts';
 
 const oAuthErrorSchema = z.object({
   error: z.string(),
   error_description: z.string().optional(),
 })
 
-type OAuthError = z.infer<typeof oAuthErrorSchema>;
   
 
 const buildAuthorizeUrl = (state: string): string => {
@@ -42,14 +42,19 @@ const postToken = async (body: URLSearchParams): Promise<Token> => {
     method: 'POST',
     headers: {
       "Authorization": `Basic ${credentials}`,
-      "X-API-Key": process.env.BUNGIE_API_KEY
+      "X-API-Key": BUNGIE_API_KEY
     },
     body: body
   })
 
-  const tokenResponse = tokenResponseSchema.safeParse(await response.json());
+  if (!response.ok) {
+    throw new Error(`Error fetching ${endpoint}: ${response.status} ${response.statusText}`);
+  }
+
+  const payload: unknown = await response.json(); 
+  const tokenResponse = tokenResponseSchema.safeParse(payload);
   if (!tokenResponse.success) {
-    const errorResponse = oAuthErrorSchema.safeParse(await response.json());
+    const errorResponse = oAuthErrorSchema.safeParse(payload);
     if (errorResponse.success) {
       throw new Error(`OAuth error: ${errorResponse.data.error} - ${errorResponse.data.error_description}`);
     } else {

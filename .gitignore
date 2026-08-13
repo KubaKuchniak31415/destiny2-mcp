@@ -4,3 +4,5 @@ node_modules/
 .env
 CLAUDE.md
 /manifest
+/.tmp-test-config
+src/random.ts

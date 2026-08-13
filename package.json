@@ -21,6 +21,7 @@
     "@types/node": "^26.1.2",
     "@types/yauzl": "^3.4.0",
     "eslint": "^10.8.0",
+    "selfsigned": "^5.5.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.65.0"
   },
