@@ -2,14 +2,22 @@ import * as logger from './utilities/logger.ts';
 import * as z from 'zod/v4';
 import { BUNGIE_API_KEY } from './config.ts';
 import { envelopeSchema, manifestSchema, type Manifest } from './types.ts';
+import { getAccessToken } from './auth/session.ts';
 
 const BUNGIE_ROOT = 'https://www.bungie.net/Platform';
 
-const bungieFetch = async <T extends z.ZodType>(path: string, schema: T): Promise<z.infer<T>> => {
+const bungieFetch = async <T extends z.ZodType>(
+  path: string, 
+  schema: T,
+  options?: {auth?: boolean; method?: string; body?: unknown}
+): Promise<z.infer<T>> => {
   const response = await fetch(`${BUNGIE_ROOT}${path}`, {
     headers: {
       'X-API-Key': BUNGIE_API_KEY,
+      'Authorization': options?.auth ? `Bearer ${(await getAccessToken()).access_token}` : undefined
     },
+    method: options?.method ?? 'GET',
+    body: options?.body ? JSON.stringify(options.body) : undefined
   });
 
   if (!response.ok) {

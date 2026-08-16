@@ -5,6 +5,8 @@ import type { Token } from "../types.ts";
 import * as logger from "../utilities/logger.ts"
 import {readTokens, isAccessExpired, isRefreshExpired, writeTokens} from "./tokens.ts"
 
+
+
 const reauthenticate = async (): Promise<Token> => {
   const state = randomUUID();
   const codePromise = waitForCode(state, 120_000);
@@ -30,11 +32,11 @@ const makeAccessToken = async (): Promise<Token> => {
         return token
       } catch (err) {
         logger.print('error', `${err}`)
-        return reauthenticate()
+        throw new Error(`Refresh is expired or invalid, please reauthenticate.`);
       }
     }
   }
-  return reauthenticate();
+  throw new Error(`No valid token found, please reauthenticate.`);
 }
 
 let accessTokenPromise: Promise<Token> | undefined;
