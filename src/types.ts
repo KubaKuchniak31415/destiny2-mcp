@@ -12,6 +12,12 @@ export const manifestSchema = z.object({
   mobileWorldContentPaths: z.object({ en: z.string() })
 });
 
+
+export const membershipSchema = z.object({
+  destinyMemberships: z.array(z.object({membershipId: z.string(), membershipType: z.int32()})),
+  primaryMembershipId: z.string().optional()
+})
+
 export type Manifest = z.infer<typeof manifestSchema>;
 
 // SocketEntries are the definitions of a specific socket on an item

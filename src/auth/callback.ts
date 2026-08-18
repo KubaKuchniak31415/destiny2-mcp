@@ -28,12 +28,12 @@ const waitForCode = async (expectedState: string, timeoutMs: number): Promise<st
         const error = url.searchParams.get('error')
         if (error) {
           const errorDescription = url.searchParams.get('error_description')
-          finish(() => reject(new Error(`Bungie Denied Authorization: ${errorDescription ?? error}`)));
           res.end(`Bungie Denied Authorization: ${errorDescription ?? error}`)
+          finish(() => reject(new Error(`Bungie Denied Authorization: ${errorDescription ?? error}`)));
           return;
         }
-        finish(() => reject(new Error("Couldnt get OAuth code")));
         res.end("Couldnt get OAuth code");
+        finish(() => reject(new Error("Couldnt get OAuth code")));
         return;
       }
       
