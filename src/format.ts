@@ -1,7 +1,15 @@
-import type { Weapon, PerkColumn, Perk } from "./types.ts";
+import type { Weapon, PerkColumn, Perk, ResolvedItem} from "./types.ts";
 
+export const ARMOUR_STATS = new Map<number, string>([
+  [392767087, 'Health'],
+  [4244567218, 'Melee'],
+  [1735777505, 'Grenade'],
+  [144602215, 'Super'],
+  [1943323491,'Class'],
+  [2996146975, 'Weapons'] 
+])
 
-const TIER_NAMES = new Map<number, string>([
+export const TIER_NAMES = new Map<number, string>([
   [0, 'Unknown'],
   [1, 'Currency'],
   [2, 'White'],
@@ -10,6 +18,7 @@ const TIER_NAMES = new Map<number, string>([
   [5, 'Purple'],
   [6, 'Exotic'],
 ])
+
 
 export const formatWeapon = (weapon: Weapon): string => {
   if (!weapon.tierType) {
@@ -30,4 +39,17 @@ export const formatWeaponDescription = (weapon: Weapon, perkColumns: Map<number,
   .map(([columnIndex, perks]) => formatPerkColumn({ columnIndex, perks }))
   .join('\n');
   return `${weaponDetails}\n\nPossible perks (one per column rolls):\n${perkDetails}`;
+}
+
+export const formatItem = (item :ResolvedItem): string => {
+  //const base = `${item.name} - ${item.type} - ${item.rarityName} - ${item.power} - ${item.location}` 
+  if (item.kind === 'weapon') {
+    return `${item.name} - ${item.type} - ${item.rarityName} - ${item.power} - ${item.location}`
+  } else {
+    let statsString = ' ';
+    for (const [key, value] of Object.entries(item.stats)) {
+      statsString += `${key[0]?.toUpperCase()} ${value} | `
+    }
+    return `${item.name} - ${item.classType} ${item.type} - ${item.rarityName} - ${item.power} - ${item.location}` + statsString
+  }
 }

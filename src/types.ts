@@ -34,7 +34,8 @@ export type ItemDef = {
   hash: number;
   displayProperties: {name: string};
   itemTypeDisplayName?: string;
-  inventory?: {tierType: number};
+  inventory?: {tierType: number; bucketTypeHash?: number};
+  classType?: number;
   plug?: {plugCategoryIdentifier: string};
   sockets?: {socketEntries: SocketEntry[]; socketCategories: SocketCategory[]};
   index: number;
@@ -45,6 +46,10 @@ export type Perk = {hash: number; name: string; isEnhanced: boolean}
 export type PerkColumn = {columnIndex: number; perks: Perk[]}
 
 export type Weapon = {hash: number; name: string; type: string; tierType: number | null}
+
+// A row from the index's `gear` table: weapons and armour only, carrying the
+// definition's home bucket so vault items can be classified.
+export type Gear = Weapon & {bucketTypeHash: number; classType: number | null}
 
 export const tokenResponseSchema = z.object({
   access_token: z.string(),
@@ -66,3 +71,99 @@ export const tokenSchema = z.object({
 });
 
 export type Token = z.infer<typeof tokenSchema>;
+
+
+export const characterSchema = z.object({
+  characterId: z.string(),
+  classType: z.int().transform(n => ['Titan','Hunter', 'Warlock'][n] ?? 'Unknown'),
+  light: z.int(),
+  dateLastPlayed: z.coerce.date(),
+//  stats: statsSchema
+});
+
+export type Character = z.infer<typeof characterSchema>;
+
+export const itemSchema = z.object({
+  itemHash: z.int(),
+  itemInstanceId: z.string().optional(),
+  bucketHash: z.int(),
+  location: z.int(),
+  state: z.int()
+})
+
+export type Item = z.infer<typeof itemSchema>
+export type InstancedItem = Item & { itemInstanceId: string };
+
+export const isInstanced = (i: Item): i is InstancedItem =>
+  i.itemInstanceId !== undefined;
+
+export const instanceSchema = z.object({
+  primaryStat: z.object({value: z.int()}).optional(),
+  damageType: z.int().optional(),
+})
+
+export type Instance = z.infer<typeof instanceSchema>;
+
+const single = <T extends z.ZodType>(inner: T) =>
+  z.object({ data: inner.optional(), privacy: z.int() });
+
+const dict = <T extends z.ZodType>(inner: T) =>
+  z.object({ data: z.record(z.string(), inner).optional(), privacy: z.int() });
+
+const inventorySchema = z.object({ items: z.array(itemSchema) });
+
+const statsSchema = z.object({
+  stats: z.record(z.string(), z.object({
+    value: z.int()
+  }))
+})
+
+export type ItemStats = z.infer<typeof statsSchema>['stats']
+
+export const profileSchema = z.object({
+  characters:           dict(characterSchema),
+  characterInventories: dict(inventorySchema),
+  characterEquipment:   dict(inventorySchema),
+  profileInventory:     single(inventorySchema),
+  itemComponents: z.object({
+    instances: dict(instanceSchema),   // keyed by itemInstanceId, not characterId
+    stats: dict(statsSchema)
+  }),
+});
+
+export type ResolvedBase = {
+  itemHash: number;
+  itemInstanceId: string;
+  name: string;
+  type: string;
+  rarity: number;
+  rarityName: string;
+  slot: string;
+  location: string;
+  equipped: boolean;
+  characterId?: string;
+  power?: number
+}
+
+export type SetBonus = {
+  twoPiece: string;
+  fourPiece: string;
+}
+
+export type ArmourStats = {
+  health: number;
+  melee: number;
+  grenade: number;
+  super: number;
+  class: number;
+  weapons: number;
+}
+
+export type ClassType = 'Titan' | 'Hunter' | 'Warlock'
+
+export type ResolvedWeapon = ResolvedBase & { kind: 'weapon'; element: string}
+export type ResolvedArmour = ResolvedBase & { kind: 'armour'; stats: ArmourStats; set?: SetBonus; classType: ClassType}
+
+export type ResolvedItem = ResolvedWeapon | ResolvedArmour;
+
+export type Profile = z.infer<typeof profileSchema>

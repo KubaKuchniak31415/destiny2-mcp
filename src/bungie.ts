@@ -1,7 +1,8 @@
 import * as logger from './utilities/logger.ts';
 import * as z from 'zod/v4';
 import { BUNGIE_API_KEY } from './config.ts';
-import { envelopeSchema, manifestSchema, membershipSchema, type Manifest } from './types.ts';
+import { envelopeSchema, manifestSchema, membershipSchema, profileSchema } from './types.ts';
+import type { Manifest, Profile} from './types.ts'
 import { getAccessToken } from './auth/session.ts';
 
 const BUNGIE_ROOT = 'https://www.bungie.net/Platform';
@@ -51,6 +52,25 @@ const bungieFetch = async <T extends z.ZodType>(
   return payload.data;
 };
 
+const Component = {
+  ProfileInventories: 102,
+  Characters: 200,
+  CharacterInventories: 201,
+  CharacterEquipment: 205,
+  ItemInstances: 300,
+  ItemStats: 304,
+} as const;
+
+const getProfile = async(
+  membershipType: number,
+  membershipId: string
+): Promise<Profile> =>
+  bungieFetch(
+    `/Destiny2/${membershipType}/Profile/${membershipId}/?components=${Object.values(Component).join(',')}`,
+    profileSchema,
+    { auth: true }
+  )
+
 
 const getMembershipData = async (): Promise<{membershipId: string, membershipType: number}> => {
   const {destinyMemberships, primaryMembershipId} = await bungieFetch('/User/GetMembershipsForCurrentUser', membershipSchema, {auth: true})
@@ -90,4 +110,5 @@ export {
   getManifestContentPath,
   getManifest,
   getMembershipData,
+  getProfile
 };

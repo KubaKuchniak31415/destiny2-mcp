@@ -9,6 +9,7 @@ import * as logger from "./utilities/logger.ts";
 import { buildWeaponIndex } from "./weaponIndex.ts";
 
 const BUNGIE_ROOT = 'https://www.bungie.net';
+const INDEX_SCHEMA = 2;
 
 // Resolved from the module, not the cwd: MCP clients launch the server from
 // wherever they happen to be.
@@ -83,7 +84,7 @@ const ensureManifest = async (): Promise<{ database: string; index: string }> =>
 
 
   const database = join(MANIFEST_DIR, `world-${version}.sqlite`);
-  const index = join(MANIFEST_DIR, `weapon-index-${version}.sqlite`);
+  const index = join(MANIFEST_DIR, `weapon-index-v${INDEX_SCHEMA}-${version}.sqlite`);
 
   if(!(await exists(database))) {
     const archive = join(MANIFEST_DIR, `world-${version}.zip`);

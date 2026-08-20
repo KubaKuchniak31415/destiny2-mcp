@@ -174,6 +174,54 @@ const extractPerkColumns = (weapon: ItemDef, lookup: Lookup, extractStats = crea
   return perkColumns;
 }
 
+// The item definition's bucketTypeHash says where an item *belongs*, unlike the
+// live bucketHash on an inventory entry which says where it currently sits.
+// Vault items all report the General bucket, so the definition is the only way
+// to tell a hand cannon from a sparrow once something is in the vault.
+// itemType 2 = Armor, 3 = Weapon. Type 20 (Dummy) also carries gear buckets —
+// vendor previews — and must not come along.
+const buildGearTable = (db: DatabaseSync, manifestDb: DatabaseSync): number => {
+  db.exec(`CREATE TABLE gear (
+    hash INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    type TEXT,
+    tierType INTEGER,
+    bucketTypeHash INTEGER NOT NULL,
+    classType INTEGER
+  );`);
+
+  const insert = db.prepare(`
+    INSERT INTO gear (hash, name, type, tierType, bucketTypeHash, classType)
+    VALUES ($hash, $name, $type, $tierType, $bucketTypeHash, $classType);`);
+
+  const list = manifestDb.prepare(`
+    SELECT json FROM DestinyInventoryItemDefinition
+    WHERE json_extract(json, '$.itemType') IN (2, 3)
+      AND json_extract(json, '$.inventory.bucketTypeHash') IS NOT NULL
+  `);
+
+  let count = 0;
+  db.exec('BEGIN');
+  for (const row of list.iterate()) {
+    const def = JSON.parse(row.json as string) as ItemDef;
+    const bucketTypeHash = def.inventory?.bucketTypeHash;
+    if (bucketTypeHash === undefined) continue;
+    insert.run({
+      $hash: def.hash,
+      $name: def.displayProperties?.name ?? '',
+      $type: def.itemTypeDisplayName ?? null,
+      $tierType: def.inventory?.tierType ?? null,
+      $bucketTypeHash: bucketTypeHash,
+      $classType: def.classType ?? null,
+    });
+    count++;
+  }
+  db.exec('COMMIT');
+
+  db.exec(`CREATE INDEX idx_gear_bucket ON gear(bucketTypeHash);`);
+  return count;
+};
+
 const buildWeaponIndex = async (indexPath: string, manifestPath: string): Promise<void> => {
   logger.print('info', `Building weapon index from ${manifestPath} to ${indexPath}`);
   const tempPath = indexPath + ".tmp";
@@ -250,6 +298,9 @@ const buildWeaponIndex = async (indexPath: string, manifestPath: string): Promis
 
       db.exec(`CREATE INDEX idx_perks_name ON weapon_perks(perk_name);`)
       db.exec(`CREATE INDEX idx_perks_weapon ON weapon_perks(weapon_hash);`)
+
+      const gearCount = buildGearTable(db, manifestDb);
+      logger.print('info', `Total gear rows indexed: ${gearCount}`);
 
       const performanceEnd = performance.now();
 

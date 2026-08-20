@@ -1,11 +1,13 @@
 import { ensureManifest} from './manifest.ts';
 import { DatabaseSync } from "node:sqlite";
-import type { Weapon, Perk } from "./types.ts";
+import type { Weapon, Perk, Gear } from "./types.ts";
 
 const openIndex = (path: string) => {
   const db = new DatabaseSync(path, { readOnly: true });
   
   const weaponByHash = db.prepare(`SELECT hash, name, type, tierType FROM weapons WHERE hash = ?;`);
+  const gearByHash = db.prepare(`
+    SELECT hash, name, type, tierType, bucketTypeHash, classType FROM gear WHERE hash = ?;`);
   const perkRows = db.prepare(`
     SELECT perk_hash, perk_name, column_index FROM weapon_perks
     WHERE weapon_hash = ?
@@ -21,6 +23,17 @@ const openIndex = (path: string) => {
         name: row.name as string,
         type: row.type as string,
         tierType: row.tierType as number | null
+      } : null;
+    },
+    getGear: (hash: number): Gear | null => {
+      const row = gearByHash.get(hash);
+      return row ? {
+        hash: row.hash as number,
+        name: row.name as string,
+        type: row.type as string,
+        tierType: row.tierType as number | null,
+        bucketTypeHash: row.bucketTypeHash as number,
+        classType: row.classType as number | null
       } : null;
     },
     getWeaponPerks: (hash: number): Map<number, Perk[]> => {
