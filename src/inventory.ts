@@ -1,9 +1,11 @@
 import type { Index } from './db.ts';
-import type { Item, InstancedItem, Instance, Profile, ItemStats, ResolvedWeapon, ResolvedArmour, ResolvedBase, ClassType } from './types.ts';
+import type { Item, InstancedItem, Instance, Profile, ItemStats, ResolvedWeapon, ResolvedArmour, ResolvedBase, ClassType, ResolvedItem, Element } from './types.ts';
 import { isInstanced } from './types.ts';
 import { TIER_NAMES } from './format.ts';
 
-export const DAMAGE_TYPES = new Map<number, string>([
+
+
+export const DAMAGE_TYPES = new Map<number, Element>([
   [0, 'None'],
   [1, 'Kinetic'],
   [2, 'Arc'],
@@ -77,13 +79,14 @@ export const gearResolver = (located: Located, index: Index, names: Map<string, 
       class:   located.stats?.[1943323491] ?? 0,
       weapons: located.stats?.[2996146975] ?? 0,
     }
-    if (!gear.classType) {
+    if (gear.classType === null) {
       return null
     }
     const classTypeMap = new Map<number, string>([
       [0, 'Titan'],
       [1, 'Hunter'],
-      [2, 'Warlock']
+      [2, 'Warlock'],
+      [3, 'Any']
     ])
     
     return { ...resolvedBase, kind: 'armour', stats: armourStats, classType: classTypeMap.get(gear.classType) as ClassType};  }
@@ -133,6 +136,83 @@ export const flattenProfile = (
 
   return located;
 };
+
+export type ItemFilterOptions = {
+  slot?: 'Kinetic Weapons' | 'Energy Weapons' | 'Power Weapons' | 'Helmet' | 'Gauntlets' | 'Chest Armor' | 'Leg Armor' | 'Class Armor';
+  location?: 'Hunter' | 'Titan' | 'Warlock' | 'Vault';
+  classType?: ClassType
+  name?: string;
+  rarity?: number;
+  kind?: 'weapon' | 'armour';
+  element?: 'Kinetic' | 'Solar' | 'Arc' | 'Void' | 'Stasis' | 'Strand'
+  equipped?: boolean
+  limit?: number;
+  offset?: number;
+}
+
+export type ItemSortingOptions = 'Power' | 'Name'| 'Rarity'
+
+export const filterItems = (items: ResolvedItem[], filterOptions: ItemFilterOptions = {}, sortingOptions: ItemSortingOptions = 'Power'): {count: number, items: ResolvedItem[]} => {
+  items = [...items];
+
+  if (filterOptions.slot) {
+    items = items.filter(i => i.slot === filterOptions.slot)
+  }
+
+  if (filterOptions.location) {
+    items = items.filter(i => i.location === filterOptions.location)
+  }
+
+  if (filterOptions.classType) {
+    items = items.filter(i => i.kind === 'armour' && 
+      (i.classType === filterOptions.classType || i.classType === 'Any'))
+  }
+
+  if (filterOptions.rarity !== undefined) {
+    items = items.filter(i => i.rarity === filterOptions.rarity)
+  }
+
+  if (filterOptions.name) {
+    const name = filterOptions.name.toLowerCase()
+    items = items.filter((i) => i.name.toLowerCase().includes(name))
+  }
+
+  if (filterOptions.kind) {
+    items = items.filter(i => i.kind === filterOptions.kind)
+  }
+
+  if (filterOptions.element) {
+    items = items.filter(i => i.kind === 'weapon' && (i.element === filterOptions.element))
+  } 
+
+  if (filterOptions.equipped !== undefined) {
+    items = items.filter(i => i.equipped === true)
+  }
+
+
+
+
+
+  switch (sortingOptions) {
+    case 'Name': items.sort((a,b) => a.name.localeCompare(b.name)); break;
+    case 'Power': items.sort((a,b) => (b.power ?? 0) - (a.power ?? 0)); break;
+    case 'Rarity': items.sort((a,b) => (b.rarity) - (a.rarity)); break;
+  }
+
+  const count = items.length
+
+  if (filterOptions.offset) {
+    items = items.slice(filterOptions.offset)
+  }
+
+  if (filterOptions.limit) {
+    items = items.slice(0, filterOptions.limit)
+  }
+
+  
+  return {count, items};
+}
+
 
 // Every copy of a given itemHash, across the vault and all characters.
 export const byItemHash = (located: Located[]): Map<number, Located[]> => {

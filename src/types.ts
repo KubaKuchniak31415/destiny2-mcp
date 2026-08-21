@@ -159,9 +159,10 @@ export type ArmourStats = {
   weapons: number;
 }
 
-export type ClassType = 'Titan' | 'Hunter' | 'Warlock'
+export type ClassType = 'Titan' | 'Hunter' | 'Warlock' | 'Any'
+export type Element = 'Kinetic' | 'Solar' | 'Arc' | 'Void' | 'Stasis' | 'Strand' | 'None' | 'Raid'
 
-export type ResolvedWeapon = ResolvedBase & { kind: 'weapon'; element: string}
+export type ResolvedWeapon = ResolvedBase & { kind: 'weapon'; element: Element}
 export type ResolvedArmour = ResolvedBase & { kind: 'armour'; stats: ArmourStats; set?: SetBonus; classType: ClassType}
 
 export type ResolvedItem = ResolvedWeapon | ResolvedArmour;

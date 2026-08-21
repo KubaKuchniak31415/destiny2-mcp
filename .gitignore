@@ -5,4 +5,3 @@ node_modules/
 CLAUDE.md
 /manifest
 /.tmp-test-config
-src/random.ts
