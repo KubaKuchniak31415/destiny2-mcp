@@ -42,14 +42,18 @@ export const formatWeaponDescription = (weapon: Weapon, perkColumns: Map<number,
 }
 
 export const formatItem = (item :ResolvedItem): string => {
-  //const base = `${item.name} - ${item.type} - ${item.rarityName} - ${item.power} - ${item.location}` 
+  const type = item.kind === 'armour' ? `${item.classType} ${item.type}` : `${item.element} ${item.type} `
+
+  const base = `${item.name} - ${type} - ${item.rarityName} - ${item.power} - ${item.location} - ${item.slot} - Hash: ${item.itemHash} Instance Id: ${item.itemInstanceId}- Equipped: ${item.equipped} ` 
+
   if (item.kind === 'weapon') {
-    return `${item.name} - ${item.type} - ${item.rarityName} - ${item.power} - ${item.location} - ${item.slot}`
+    return base
   } else {
     let statsString = ' ';
     for (const [key, value] of Object.entries(item.stats)) {
       statsString += `${key[0]?.toUpperCase()} ${value} | `
     }
-    return `${item.name} - ${item.classType} ${item.type} - ${item.rarityName} - ${item.power} - ${item.location} - ${item.slot}` + statsString
+    statsString = statsString.slice(0, -2)
+    return base + ' - ' + statsString
   }
 }

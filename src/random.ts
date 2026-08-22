@@ -55,7 +55,9 @@ const OAuth = async () => {
   })
 
   const filterOptions: ItemFilterOptions = {
+    rarity: 6,
     equipped: true,
+    location: 'Hunter'
   }
 
   const {count, items} = filterItems(resArr, filterOptions, 'Name')
