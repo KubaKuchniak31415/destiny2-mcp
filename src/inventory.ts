@@ -1,7 +1,8 @@
 import type { Index } from './db.ts';
-import type { Item, InstancedItem, Instance, Profile, ItemStats, ResolvedWeapon, ResolvedArmour, ResolvedBase, ClassType, ResolvedItem, Element } from './types.ts';
+import type { PerkColumn, Item, InstancedItem, Instance, Profile, ItemStats, ResolvedWeapon, ResolvedArmour, ResolvedBase, ClassType, ResolvedItem, Element, Sockets } from './types.ts';
 import { isInstanced } from './types.ts';
 import { TIER_NAMES } from './format.ts';
+import * as logger from './utilities/logger.ts'
 
 
 
@@ -26,6 +27,8 @@ export type Located = {
   where: Where;
   equipped: boolean;
   stats?: Record<number, number>;
+  sockets?: Sockets
+  reusablePlugs?: number[]
 };
 
 const BUCKET_MAP = new Map<number, { slot: string; kind: 'weapon' | 'armour' }>([
@@ -69,7 +72,49 @@ export const gearResolver = (located: Located, index: Index, names: Map<string, 
   }
 
   if (bucket.kind === 'weapon') {
-    return {...resolvedBase, kind: 'weapon', element: DAMAGE_TYPES.get(located.instance?.damageType ?? 0) ?? 'None'}
+    const possiblePerkMap = index.getWeaponPerks(located.item.itemHash, true)
+    const socketed = new Set(
+      located.sockets?.map(s => s.plugHash).filter(h => h !== undefined) ?? []
+    );
+    const candidates = new Set ([...socketed, ...(located.reusablePlugs ?? [])])
+    const rolledPerks = new Map<number, PerkColumn>()
+
+    for (const [idx, col] of possiblePerkMap.entries()) {
+      for (const perk of col) {
+        if (candidates.has(perk.hash)) {
+          if (!(rolledPerks.has(idx))) {
+            rolledPerks.set(idx, {
+              columnIndex: idx,
+              perks: []
+            })
+          }
+          if (socketed.has(perk.hash)) perk.selected = true;
+          rolledPerks.get(idx)?.perks.push(perk)
+        }
+      }
+    }
+    let perkString = `${gear.name}`
+    for (const [idx, col] of rolledPerks) {
+      perkString += `Column ${idx}: `
+      for (const perk of col.perks) {
+        if (perk.selected) {
+          perkString += `${perk.name}* |`
+        } else {
+          perkString += `${perk.name} |`
+        }
+      }
+      perkString += '\n'
+    }
+    logger.print('debug', `${perkString}`)
+
+    const perkColumns: PerkColumn[] = []
+
+    for (const [idx, col] of rolledPerks) {
+      perkColumns[idx] = col
+    }
+
+      
+    return {...resolvedBase, kind: 'weapon', element: DAMAGE_TYPES.get(located.instance?.damageType ?? 0) ?? 'None', rolledPerks: perkColumns}
   } else {
     const armourStats = {
       health:  located.stats?.[392767087]  ?? 0,
@@ -102,13 +147,19 @@ export const flattenProfile = (
   profile: Profile
 ): Located[] => {
   const instances = profile.itemComponents.instances.data ?? {};
-  const statsByInstance = profile.itemComponents.stats.data ?? {}
+  const statsByInstance = profile.itemComponents.stats.data ?? {};
+  const socketsByInstance = profile.itemComponents.sockets.data ?? {};
+  const candidatesByInstance= profile.itemComponents.reusablePlugs.data ?? {}
   const located: Located[] = [];
 
   const flattenStats = (raw?: ItemStats): Record<number, number> | undefined => 
     raw && Object.fromEntries(
       Object.entries(raw).map(([hash, {value}]) => [Number(hash), value])
     )
+
+  const flattenPlugs = (raw?: Record<string, { plugItemHash: number }[]>): number[] | undefined =>
+    raw && Object.values(raw).flatMap(opts => opts.map(o => o.plugItemHash));
+
 
   const take = (items: Item[], where: Where, equipped: boolean) => {
     for (const item of items) {
@@ -119,7 +170,9 @@ export const flattenProfile = (
         instance: instances[item.itemInstanceId],
         where,
         equipped,
-        stats: flattenStats(statsByInstance[item.itemInstanceId]?.stats)
+        stats: flattenStats(statsByInstance[item.itemInstanceId]?.stats),
+        sockets: socketsByInstance[item.itemInstanceId]?.sockets,
+        reusablePlugs: flattenPlugs(candidatesByInstance[item.itemInstanceId]?.plugs) 
       });
     }
   };

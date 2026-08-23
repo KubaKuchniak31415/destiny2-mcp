@@ -9,12 +9,16 @@ const openIndex = (path: string) => {
   const gearByHash = db.prepare(`
     SELECT hash, name, type, tierType, bucketTypeHash, classType FROM gear WHERE hash = ?;`);
   const perkRows = db.prepare(`
-    SELECT perk_hash, perk_name, column_index FROM weapon_perks
+    SELECT perk_hash, perk_name, column_index, is_enhanced FROM weapon_perks
     WHERE weapon_hash = ?
     AND is_enhanced = 0
     ORDER BY column_index, perk_name;
   `)
-
+  const allPerkRows = db.prepare(`
+    SELECT perk_hash, perk_name, column_index, is_enhanced FROM weapon_perks
+    WHERE weapon_hash = ?
+    ORDER BY column_index, perk_name;
+  `)
   return {
     getWeapon: (hash: number): Weapon | null => {
       const row = weaponByHash.get(hash);
@@ -36,17 +40,20 @@ const openIndex = (path: string) => {
         classType: row.classType as number | null
       } : null;
     },
-    getWeaponPerks: (hash: number): Map<number, Perk[]> => {
+    getWeaponPerks: (hash: number, includeAll: boolean = false): Map<number, Perk[]> => {
       const perkMap = new Map<number, Perk[]>();
+
+      const perkStmt = includeAll ? allPerkRows: perkRows
       
-      for (const row of perkRows.iterate(hash)) {
+      for (const row of perkStmt.iterate(hash)) {
         const columnIndex = row.column_index as number;
 
+        const isEnhanced = Number(row.is_enhanced ?? 0) === 1;
 
         const perk: Perk = {
           hash: row.perk_hash as number,
           name: row.perk_name as string,
-          isEnhanced: false
+          isEnhanced,
         }
 
         const perks = perkMap.get(columnIndex);

@@ -42,7 +42,7 @@ export type ItemDef = {
 }
 
 
-export type Perk = {hash: number; name: string; isEnhanced: boolean}
+export type Perk = {hash: number; name: string; isEnhanced: boolean; selected?: boolean}
 export type PerkColumn = {columnIndex: number; perks: Perk[]}
 
 export type Weapon = {hash: number; name: string; type: string; tierType: number | null}
@@ -118,6 +118,23 @@ const statsSchema = z.object({
   }))
 })
 
+const socketsSchema = z.object({
+  sockets: z.array(z.object({
+    plugHash: z.int().optional(),
+    isEnabled: z.boolean(),
+  }))
+})
+
+export type Sockets = z.infer<typeof socketsSchema>['sockets']
+
+const reusablePlugsSchema = z.object({
+  plugs: z.record(z.string(), z.array(z.object({
+    plugItemHash: z.int(),
+  })))
+});
+
+export type ReusablePlugs = z.infer<typeof reusablePlugsSchema>['plugs']
+
 export type ItemStats = z.infer<typeof statsSchema>['stats']
 
 export const profileSchema = z.object({
@@ -127,7 +144,9 @@ export const profileSchema = z.object({
   profileInventory:     single(inventorySchema),
   itemComponents: z.object({
     instances: dict(instanceSchema),   // keyed by itemInstanceId, not characterId
-    stats: dict(statsSchema)
+    stats: dict(statsSchema),
+    sockets: dict(socketsSchema),
+    reusablePlugs: dict(reusablePlugsSchema),
   }),
 });
 
@@ -162,7 +181,7 @@ export type ArmourStats = {
 export type ClassType = 'Titan' | 'Hunter' | 'Warlock' | 'Any'
 export type Element = 'Kinetic' | 'Solar' | 'Arc' | 'Void' | 'Stasis' | 'Strand' | 'None' | 'Raid'
 
-export type ResolvedWeapon = ResolvedBase & { kind: 'weapon'; element: Element}
+export type ResolvedWeapon = ResolvedBase & { kind: 'weapon'; element: Element; rolledPerks?: PerkColumn[]}
 export type ResolvedArmour = ResolvedBase & { kind: 'armour'; stats: ArmourStats; set?: SetBonus; classType: ClassType}
 
 export type ResolvedItem = ResolvedWeapon | ResolvedArmour;

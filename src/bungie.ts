@@ -59,6 +59,8 @@ const Component = {
   CharacterEquipment: 205,
   ItemInstances: 300,
   ItemStats: 304,
+  ItemSockets: 305,
+  ReusablePlugs: 310,
 } as const;
 
 const getProfile = async(

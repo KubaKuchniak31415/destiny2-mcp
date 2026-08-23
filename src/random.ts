@@ -34,6 +34,9 @@ const OAuth = async () => {
   const index = await getIndex()
   
   const profileData = await getProfile(membershipType, membershipId)
+  for (const sock of profileData.itemComponents?.sockets?.data?.['6917530182775295221']?.sockets ?? []) {
+    logger.print('info', `${sock.isEnabled}, ${sock.plugHash}`)
+  }
   const characters = profileData.characters.data ?? {};
   for (const [characterId, character] of Object.entries(characters)) {
     const inventoryCount = profileData.characterInventories.data?.[characterId]?.items.filter(i => isInstanced(i)).length ?? 0
@@ -55,7 +58,6 @@ const OAuth = async () => {
   })
 
   const filterOptions: ItemFilterOptions = {
-    rarity: 6,
     equipped: true,
     location: 'Hunter'
   }

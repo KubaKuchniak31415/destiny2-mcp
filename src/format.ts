@@ -15,7 +15,7 @@ export const TIER_NAMES = new Map<number, string>([
   [2, 'White'],
   [3, 'Green'],
   [4, 'Blue'],
-  [5, 'Purple'],
+  [5, 'Legendary'],
   [6, 'Exotic'],
 ])
 
@@ -42,18 +42,18 @@ export const formatWeaponDescription = (weapon: Weapon, perkColumns: Map<number,
 }
 
 export const formatItem = (item :ResolvedItem): string => {
-  const type = item.kind === 'armour' ? `${item.classType} ${item.type}` : `${item.element} ${item.type} `
-
-  const base = `${item.name} - ${type} - ${item.rarityName} - ${item.power} - ${item.location} - ${item.slot} - Hash: ${item.itemHash} Instance Id: ${item.itemInstanceId}- Equipped: ${item.equipped} ` 
-
-  if (item.kind === 'weapon') {
-    return base
-  } else {
-    let statsString = ' ';
-    for (const [key, value] of Object.entries(item.stats)) {
-      statsString += `${key[0]?.toUpperCase()} ${value} | `
+  let statsString = ''
+  if (item.kind === 'armour') {
+    for (const [k, v] of Object.entries(item.stats)) {
+      statsString += `${k[0]?.toUpperCase()}${v}/`
     }
-    statsString = statsString.slice(0, -2)
-    return base + ' - ' + statsString
+    statsString = statsString.slice(0,-1)
   }
+
+  const type = item.kind === 'armour' ? `${item.classType} ${item.type}` : `${item.element} ${item.type} (${item.slot.split(' ')[0]} Slot)`
+  const location = item.equipped === true ? `${item.location} (Equipped)` : `${item.location}`
+
+  const base = `${item.name} | ${item.rarityName} ${type} | ${item.power ?? '?'} | ${location}${item.kind === 'armour' ? ` | ${statsString}` : ''} | ${item.itemInstanceId}` 
+
+  return base
 }
