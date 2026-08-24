@@ -81,31 +81,18 @@ export const gearResolver = (located: Located, index: Index, names: Map<string, 
 
     for (const [idx, col] of possiblePerkMap.entries()) {
       for (const perk of col) {
-        if (candidates.has(perk.hash)) {
-          if (!(rolledPerks.has(idx))) {
-            rolledPerks.set(idx, {
-              columnIndex: idx,
-              perks: []
-            })
-          }
-          if (socketed.has(perk.hash)) perk.selected = true;
-          rolledPerks.get(idx)?.perks.push(perk)
+        if (!candidates.has(perk.hash)) {continue;}
+
+        if (!(rolledPerks.has(idx))) {
+          rolledPerks.set(idx, {
+            columnIndex: idx,
+            perks: []
+          })
         }
+        if (socketed.has(perk.hash)) perk.selected = true;
+        rolledPerks.get(idx)?.perks.push(perk)
       }
     }
-    let perkString = `${gear.name}`
-    for (const [idx, col] of rolledPerks) {
-      perkString += `Column ${idx}: `
-      for (const perk of col.perks) {
-        if (perk.selected) {
-          perkString += `${perk.name}* |`
-        } else {
-          perkString += `${perk.name} |`
-        }
-      }
-      perkString += '\n'
-    }
-    logger.print('debug', `${perkString}`)
 
     const perkColumns: PerkColumn[] = []
 

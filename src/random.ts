@@ -65,7 +65,7 @@ const OAuth = async () => {
   const {count, items} = filterItems(resArr, filterOptions, 'Name')
 
   for (const i of items) {
-    logger.print('info', formatItem(i))
+    logger.print('info', formatItem(i, true))
   }
   logger.print('info', `Total of ${count} items before slicing`)
 }

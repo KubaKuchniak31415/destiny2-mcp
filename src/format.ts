@@ -41,7 +41,7 @@ export const formatWeaponDescription = (weapon: Weapon, perkColumns: Map<number,
   return `${weaponDetails}\n\nPossible perks (one per column rolls):\n${perkDetails}`;
 }
 
-export const formatItem = (item :ResolvedItem): string => {
+export const formatItem = (item :ResolvedItem, long: boolean = false): string => {
   let statsString = ''
   if (item.kind === 'armour') {
     for (const [k, v] of Object.entries(item.stats)) {
@@ -54,6 +54,20 @@ export const formatItem = (item :ResolvedItem): string => {
   const location = item.equipped === true ? `${item.location} (Equipped)` : `${item.location}`
 
   const base = `${item.name} | ${item.rarityName} ${type} | ${item.power ?? '?'} | ${location}${item.kind === 'armour' ? ` | ${statsString}` : ''} | ${item.itemInstanceId}` 
+
+  if (long && item.kind === 'weapon') {
+    let rollString = '\n'
+    
+    for (const col of (item.rolledPerks ?? [])) {
+      rollString += `Column ${col.columnIndex+1}: `
+      for (const perk of col.perks) {
+        rollString += perk.selected ? `${perk.name}* |` : `${perk.name} |`
+        
+      }
+    rollString = rollString.slice(0,-1) + '\n'
+    }
+    return base + rollString
+  }
 
   return base
 }
