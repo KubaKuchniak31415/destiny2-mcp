@@ -5,6 +5,7 @@ import * as z from "zod/v4";
 import { getIndex } from "./db.ts";
 import { registerWeaponTools } from "./tools/weapons.ts";
 import { registerAccountTools } from "./tools/account.ts";
+import { registerInventoryTools } from "./tools/inventory.ts";
 
 const createServer = (): McpServer => {
 
@@ -15,6 +16,7 @@ const createServer = (): McpServer => {
 
   registerWeaponTools(server);
   registerAccountTools(server);
+  registerInventoryTools(server);
 
   server.registerTool("getManifestVersion", {
     description: "Fetches the current Destiny 2 manifest version from Bungie.net",

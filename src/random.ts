@@ -5,9 +5,9 @@ import * as logger from './utilities/logger.ts';
 import { getAccessToken } from './auth/session.ts';
 import { getMembershipData, getProfile } from './bungie.ts';
 import { isInstanced } from './types.ts';
-import { characterNames, filterItems, flattenProfile, gearResolver, type ItemFilterOptions } from './inventory.ts';
-import { getIndex } from './db.ts';
-import { formatItem } from './format.ts';
+import { filterItems, type ItemFilterOptions } from './inventory.ts';
+import { formatItems } from './format.ts';
+import { getResolvedItems } from './profile.ts';
 
 /*
 const main = async () => {
@@ -24,14 +24,13 @@ const main = async () => {
 }
 */
 
-const OAuth = async () => {
+const random = async () => {
   logger.print('info', 'Waiting for token!')
   const token = await getAccessToken();
   logger.print('info', JSON.stringify(token))
   logger.print('info', `${Date.now() / 1000}`)
   const {membershipId, membershipType} = await getMembershipData()
   logger.print('info', `memid: ${membershipId} memtype: ${membershipType}`)
-  const index = await getIndex()
   
   const profileData = await getProfile(membershipType, membershipId)
   for (const sock of profileData.itemComponents?.sockets?.data?.['6917530182775295221']?.sockets ?? []) {
@@ -47,27 +46,27 @@ const OAuth = async () => {
   logger.print('info', `\n\n\n\n`)
 
 
-  const charNames = characterNames(profileData);
-  const flattened = flattenProfile(profileData);
-
-
-  const resArr = flattened.flatMap((l) => {
-    const resolved = gearResolver(l, index, charNames)
-    if (!resolved) return [];
-    return resolved;
-  })
-
   const filterOptions: ItemFilterOptions = {
-    equipped: true,
-    location: 'Hunter'
+    location: 'Hunter',
+    rarity: 'Exotic'
   }
 
-  const {count, items} = filterItems(resArr, filterOptions, 'Name')
+  const resolvedItems = await getResolvedItems()
+  const {count, items} = filterItems(resolvedItems, filterOptions, 'Power')
+  const LONG_THRESHOLD = 10
+  let showPerks: boolean | undefined;
+  showPerks = undefined
 
-  for (const i of items) {
-    logger.print('info', formatItem(i, true))
+  if (showPerks === undefined) {
+    if (filterOptions.perks !== undefined || (filterOptions.limit ?? LONG_THRESHOLD+1) <= LONG_THRESHOLD || count <= LONG_THRESHOLD) {
+      showPerks = true
+    } else {
+      showPerks = false
+    }
   }
-  logger.print('info', `Total of ${count} items before slicing`)
+  
+  const formatted = formatItems(count, items, showPerks)
+  logger.print('info', formatted)
 }
 
-OAuth();
+random();

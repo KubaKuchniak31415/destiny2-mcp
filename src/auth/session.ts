@@ -48,7 +48,8 @@ const makeAccessToken = async (): Promise<Token> => {
   if (existingToken) {
     if (!isAccessExpired(existingToken)) {
       return existingToken
-    } else if (!isRefreshExpired(existingToken)) {
+    }
+    if (!isRefreshExpired(existingToken)) {
       try {
         logger.print('info', "Refreshing token")
         const token = await refreshToken(existingToken.refresh_token)

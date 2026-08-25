@@ -12,9 +12,9 @@ export const ARMOUR_STATS = new Map<number, string>([
 export const TIER_NAMES = new Map<number, string>([
   [0, 'Unknown'],
   [1, 'Currency'],
-  [2, 'White'],
-  [3, 'Green'],
-  [4, 'Blue'],
+  [2, 'Common'],
+  [3, 'Uncommon'],
+  [4, 'Rare'],
   [5, 'Legendary'],
   [6, 'Exotic'],
 ])
@@ -50,24 +50,38 @@ export const formatItem = (item :ResolvedItem, long: boolean = false): string =>
     statsString = statsString.slice(0,-1)
   }
 
-  const type = item.kind === 'armour' ? `${item.classType} ${item.type}` : `${item.element} ${item.type} (${item.slot.split(' ')[0]} Slot)`
+  const type = item.kind === 'armour' 
+    ? `${item.type.startsWith(item.classType) ? item.type : `${item.classType} ${item.type}`}` 
+    : `${item.element} ${item.type} (${item.slot.split(' ')[0]} Slot)`
+  
   const location = item.equipped === true ? `${item.location} (Equipped)` : `${item.location}`
 
   const base = `${item.name} | ${item.rarityName} ${type} | ${item.power ?? '?'} | ${location}${item.kind === 'armour' ? ` | ${statsString}` : ''} | ${item.itemInstanceId}` 
 
-  if (long && item.kind === 'weapon') {
-    let rollString = '\n'
-    
-    for (const col of (item.rolledPerks ?? [])) {
-      rollString += `Column ${col.columnIndex+1}: `
-      for (const perk of col.perks) {
-        rollString += perk.selected ? `${perk.name}* |` : `${perk.name} |`
-        
-      }
-    rollString = rollString.slice(0,-1) + '\n'
-    }
-    return base + rollString
+  if (long && item.kind === 'weapon' && item.rolledPerks?.length) {
+    const rolls = item.rolledPerks.map(col => 
+      `Column ${col.columnIndex+1}: ` +
+      col.perks.map(p => p.selected ? `${p.name}*`: p.name).join(' | ')
+    )
+    return [base, ...rolls].join('\n')
   }
 
   return base
+}
+
+export const formatItems = (count: number,  items: ResolvedItem[], long: boolean = false): string => {
+
+  if (items.length === 0) {
+    return 'No items matched the search parameters'
+  }
+
+  let formatted = `Name | Rarity type slot | Power | Location (Equipped) | [Armour stats Health/Melee/Grenade/Super/Class/Weapons] | Instance ID\n`
+  if (long) {
+    formatted += `Perk Columns (* means perk is currently selected)\n`
+  }
+    formatted += items.map(i => `${formatItem(i, long)}`).join('\n')
+
+  formatted += `\nShowing ${items.length} of ${count} items`
+
+  return formatted
 }

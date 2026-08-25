@@ -178,7 +178,9 @@ export type ArmourStats = {
   weapons: number;
 }
 
-export type ClassType = 'Titan' | 'Hunter' | 'Warlock' | 'Any'
+export const classTypeSchema = z.enum(['Titan', 'Hunter', 'Warlock', 'Any'])
+
+export type ClassType = z.infer<typeof classTypeSchema>
 export type Element = 'Kinetic' | 'Solar' | 'Arc' | 'Void' | 'Stasis' | 'Strand' | 'None' | 'Raid'
 
 export type ResolvedWeapon = ResolvedBase & { kind: 'weapon'; element: Element; rolledPerks?: PerkColumn[]}

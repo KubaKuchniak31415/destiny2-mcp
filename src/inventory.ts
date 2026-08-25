@@ -1,10 +1,8 @@
 import type { Index } from './db.ts';
 import type { PerkColumn, Item, InstancedItem, Instance, Profile, ItemStats, ResolvedWeapon, ResolvedArmour, ResolvedBase, ClassType, ResolvedItem, Element, Sockets } from './types.ts';
-import { isInstanced } from './types.ts';
+import { classTypeSchema, isInstanced } from './types.ts';
 import { TIER_NAMES } from './format.ts';
-import * as logger from './utilities/logger.ts'
-
-
+import * as z from 'zod/v4'
 
 export const DAMAGE_TYPES = new Map<number, Element>([
   [0, 'None'],
@@ -177,20 +175,63 @@ export const flattenProfile = (
   return located;
 };
 
-export type ItemFilterOptions = {
-  slot?: 'Kinetic Weapons' | 'Energy Weapons' | 'Power Weapons' | 'Helmet' | 'Gauntlets' | 'Chest Armor' | 'Leg Armor' | 'Class Armor';
-  location?: 'Hunter' | 'Titan' | 'Warlock' | 'Vault';
-  classType?: ClassType
-  name?: string;
-  rarity?: number;
-  kind?: 'weapon' | 'armour';
-  element?: 'Kinetic' | 'Solar' | 'Arc' | 'Void' | 'Stasis' | 'Strand'
-  equipped?: boolean
-  limit?: number;
-  offset?: number;
-}
+
+export const itemFilterSchema = z.object({
+  slot: z.enum(['Kinetic Weapons', 'Energy Weapons', 'Power Weapons', 'Helmet', 'Gauntlets', 'Chest Armor', 'Leg Armor', 'Class Armor']).optional(),
+  location: z.enum(['Hunter', 'Titan', 'Warlock', 'Vault']).optional().describe(
+    'Where the item currently sits: a character, named by class, or the vault. e.g. "my hunter" means location: "Hunter"'
+  ),
+  classType: classTypeSchema.optional().describe(
+    'Which class the armour is for NOT where it is. A hunter helmet sitting in the vault is classType "Hunter", Location: "Vault" '
+    + 'Any is class-agnostic armour but this appears super infrequently. Weapons have no class, this filter excludes them'
+
+  ),
+  name: z.string().optional().describe(
+    'Case-Insensitive substring of item name'
+  ),
+  rarity: z.enum(['Common', 'Uncommon', 'Rare', 'Legendary', 'Exotic']).optional(),
+  kind: z.enum(['weapon', 'armour']).optional(),
+  element: z.enum(['Kinetic', 'Solar', 'Arc', 'Void', 'Stasis', 'Strand']).optional(),
+  perks: z.array(z.string()).optional().describe(
+    'Perk names, case-insensitive substring match. An item must have ALL of them. Matches any perk the item can roll into, not just the one currently selected'
+  ),
+  equipped: z.boolean().optional().describe(
+    'Is the item currently equipped on any character? Use with location for queries such as "What is my hunter currently using?"'
+  ),
+  limit: z.int().default(30).describe(
+    'Amount of items returned, default is 30. Raise only if user wants to see a full list'
+  ),
+  offset: z.int().optional().describe(
+    'Skip this many matches. Better to narrow filters than use this'
+  ),
+})
+
+export type ItemFilterOptions = z.input<typeof itemFilterSchema>
 
 export type ItemSortingOptions = 'Power' | 'Name'| 'Rarity'
+
+const hasPerks = (weapon: ResolvedWeapon, perkNames: string[]): boolean => {
+  if (!weapon.rolledPerks) return false;
+
+  const weaponPerkNames = weapon.rolledPerks?.flatMap(col => 
+    col.perks.map(perk => perk.name.toLowerCase())
+  )
+
+  perkNames = perkNames.map(pn => pn.toLowerCase())
+
+
+  for (const perkName of perkNames) {
+    let perkFound = false
+    for (const weaponPerkName of weaponPerkNames) {
+      if (weaponPerkName.includes(perkName)) {
+        perkFound = true
+      };
+    }
+    if (perkFound === false) return false;
+  }
+
+  return true
+}
 
 export const filterItems = (items: ResolvedItem[], filterOptions: ItemFilterOptions = {}, sortingOptions: ItemSortingOptions = 'Power'): {count: number, items: ResolvedItem[]} => {
   items = [...items];
@@ -209,7 +250,7 @@ export const filterItems = (items: ResolvedItem[], filterOptions: ItemFilterOpti
   }
 
   if (filterOptions.rarity !== undefined) {
-    items = items.filter(i => i.rarity === filterOptions.rarity)
+    items = items.filter(i => i.rarityName === filterOptions.rarity)
   }
 
   if (filterOptions.name) {
@@ -225,8 +266,13 @@ export const filterItems = (items: ResolvedItem[], filterOptions: ItemFilterOpti
     items = items.filter(i => i.kind === 'weapon' && (i.element === filterOptions.element))
   } 
 
+  if (filterOptions.perks !== undefined) { 
+    const perks = filterOptions.perks
+    items = items.filter(i => (i.kind === 'weapon' && hasPerks(i, perks)))
+  }
+
   if (filterOptions.equipped !== undefined) {
-    items = items.filter(i => i.equipped === true)
+    items = items.filter(i => i.equipped === filterOptions.equipped)
   }
 
 
@@ -240,14 +286,14 @@ export const filterItems = (items: ResolvedItem[], filterOptions: ItemFilterOpti
   }
 
   const count = items.length
+  
+  const limit = filterOptions.limit ?? 30;
 
   if (filterOptions.offset) {
     items = items.slice(filterOptions.offset)
   }
 
-  if (filterOptions.limit) {
-    items = items.slice(0, filterOptions.limit)
-  }
+  items = items.slice(0, limit)
 
   
   return {count, items};

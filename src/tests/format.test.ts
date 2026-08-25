@@ -203,7 +203,7 @@ test('formatItem prints power 10 as a number rather than hiding it', () => {
 
   assert.equal(
     formatItem(stoicism),
-    'Stoicism | Exotic Titan Titan Mark | 10 | Vault | H20/M25/G2/S30/C2/W2 | 6917530020834823037',
+    'Stoicism | Exotic Titan Mark | 10 | Vault | H20/M25/G2/S30/C2/W2 | 6917530020834823037',
   );
 });
 
@@ -251,4 +251,160 @@ test('formatItem gives weapons one fewer column than armour', () => {
   // decision rather than a surprise.
   assert.equal(formatItem(lostSignal).split(' | ').length, 5);
   assert.equal(formatItem(cogburn).split(' | ').length, 6);
+});
+
+// ---------------------------------------------------------------------------
+// formatItem, long form
+//
+// `long: true` appends the weapon's rolled perk columns beneath the base line.
+// It exists for the narrow case — once a listing is down to a handful of items,
+// the perks are the whole reason the user asked. It roughly triples a weapon's
+// line, so nothing here may leak into the short form.
+//
+// The fixture is a real roll off the live account (Kindled Orchid, Hunter,
+// equipped), including the uneven column widths: two perks in the first two
+// columns, three in the last two. Real rolls are not rectangular.
+
+// gearResolver only ever *sets* `selected = true` (src/inventory.ts:89) — it
+// never writes `false`. So an unselected perk has the key absent, not falsy, and
+// the fixtures mirror that rather than spelling out `selected: false`.
+const sel = (name: string): Perk => ({ hash: 1, name, isEnhanced: false, selected: true });
+
+const kindledOrchid: ResolvedWeapon = {
+  kind: 'weapon',
+  itemHash: 1119734784,
+  itemInstanceId: '6917530191805300595',
+  name: 'Kindled Orchid',
+  type: 'Hand Cannon',
+  rarity: 5,
+  rarityName: 'Legendary',
+  slot: 'Energy Weapons',
+  location: 'Hunter',
+  equipped: true,
+  power: 510,
+  element: 'Void',
+  rolledPerks: [
+    { columnIndex: 0, perks: [sel('Full Bore'), perk('Polygonal Rifling')] },
+    { columnIndex: 1, perks: [perk('Steady Rounds'), sel('Tactical Mag')] },
+    { columnIndex: 2, perks: [perk('Kill Clip'), perk('Rangefinder'), sel('Shoot to Loot')] },
+    { columnIndex: 3, perks: [perk('Destabilizing Rounds'), sel('Explosive Payload'), perk('Eye of the Storm')] },
+  ],
+};
+
+const orchidBase =
+  'Kindled Orchid | Legendary Void Hand Cannon (Energy Slot) | 510 | Hunter (Equipped) | 6917530191805300595';
+
+test('formatItem long form appends perk columns beneath the base line', () => {
+  // Whole-string, whitespace included. The separator here was built by string
+  // concatenation before, which produced 'A |B |C ' — pipe hugging the following
+  // name, trailing space on every column. Invisible in a terminal, wrong in the
+  // one place the model has to read perk names apart.
+  assert.equal(
+    formatItem(kindledOrchid, true),
+    orchidBase + '\n' +
+      'Column 1: Full Bore* | Polygonal Rifling\n' +
+      'Column 2: Steady Rounds | Tactical Mag*\n' +
+      'Column 3: Kill Clip | Rangefinder | Shoot to Loot*\n' +
+      'Column 4: Destabilizing Rounds | Explosive Payload* | Eye of the Storm',
+  );
+});
+
+test('formatItem long form neither leads nor trails with whitespace', () => {
+  // Asserted separately because the trailing newline only shows up once lines are
+  // joined into a listing, several layers away from this function.
+  const output = formatItem(kindledOrchid, true);
+
+  assert.equal(output, output.trim());
+});
+
+test('formatItem long form leaves the base line byte-identical to the short form', () => {
+  // The perk block is additive. If `long` ever changed the base line as well, the
+  // tool layer's header — which describes the columns once for the whole listing —
+  // would stop describing half the rows.
+  assert.equal(formatItem(kindledOrchid, true).split('\n')[0], formatItem(kindledOrchid));
+});
+
+test('formatItem marks exactly the selected perk in each column', () => {
+  // The asterisk is the difference between "this copy has Shoot to Loot" and
+  // "this copy can be set to Shoot to Loot". On a tier 5 weapon the other perks in
+  // the column are free to swap to, so the model needs both facts, distinguished.
+  const columns = formatItem(kindledOrchid, true).split('\n').slice(1);
+
+  for (const column of columns) {
+    assert.equal(column.split(' | ').filter((name) => name.endsWith('*')).length, 1, column);
+  }
+});
+
+test('formatItem long form keeps a column whose perks are all unselected', () => {
+  // Measured zero times across 2587 real columns, because 305 always reports a
+  // current selection. Documents the fallback anyway: the column prints with no
+  // asterisk rather than being dropped, so a future 310-only path cannot silently
+  // lose perks.
+  const unselected: ResolvedWeapon = {
+    ...kindledOrchid,
+    rolledPerks: [{ columnIndex: 0, perks: [perk('Kill Clip'), perk('Rangefinder')] }],
+  };
+
+  assert.equal(formatItem(unselected, true), orchidBase + '\nColumn 1: Kill Clip | Rangefinder');
+});
+
+test('formatItem long form preserves non-contiguous column indexes', () => {
+  // Component 310 returns partial data for 35 of 648 weapons — Osteo Striga comes
+  // back with columns 0, 1 and 3 and no column 2. Numbering off the array position
+  // instead of columnIndex would relabel that third column as "Column 3", quietly
+  // moving a perk into a slot it does not roll in.
+  const osteo: ResolvedWeapon = {
+    ...kindledOrchid,
+    rolledPerks: [
+      { columnIndex: 0, perks: [sel('Corkscrew Rifling')] },
+      { columnIndex: 1, perks: [sel('Ricochet Rounds')] },
+      { columnIndex: 3, perks: [sel('Vanguard\'s Vindication')] },
+    ],
+  };
+
+  assert.deepEqual(
+    formatItem(osteo, true).split('\n').slice(1).map((line) => line.split(':')[0]),
+    ['Column 1', 'Column 2', 'Column 4'],
+  );
+});
+
+test('formatItem long form falls back to the base line when a weapon has no roll', () => {
+  // rolledPerks is optional, and 50 weapons have no component 310 entry at all.
+  // Both the absent and the empty case must return the bare line — an earlier
+  // version returned base + '\n', which showed up as blank rows in a listing.
+  const noPerks: ResolvedWeapon = { ...kindledOrchid };
+  delete noPerks.rolledPerks;
+
+  assert.equal(formatItem(noPerks, true), orchidBase);
+  assert.equal(formatItem({ ...kindledOrchid, rolledPerks: [] }, true), orchidBase);
+});
+
+test('formatItem long form is a no-op for armour', () => {
+  // Armour carries no rolled perks, so the flag has nothing to add. The tool layer
+  // passes one `long` for the whole page rather than branching per item, which only
+  // works if armour ignores it.
+  assert.equal(formatItem(cogburn, true), formatItem(cogburn));
+});
+
+test('formatItem defaults to the short form', () => {
+  // The default is what every listing gets. A default of `true` would trip the
+  // token budget on the first call with no error anywhere.
+  assert.equal(formatItem(kindledOrchid), formatItem(kindledOrchid, false));
+  assert.doesNotMatch(formatItem(kindledOrchid), /Column /);
+});
+
+test('formatItem does not repeat the class name on class items', () => {
+  // Helmets and gauntlets are named generically, so the class has to be prefixed:
+  // "Titan Helmet". The three class items already carry it — Titan Mark, Hunter
+  // Cloak, Warlock Bond — and prefixing blindly produced "Titan Titan Mark".
+  // Both branches are asserted because a fix that strips unconditionally would
+  // leave every helmet in the vault unattributed.
+  const classItem = (classType: 'Titan' | 'Hunter' | 'Warlock', type: string): string =>
+    formatItem({ ...cogburn, classType, type, slot: 'Class Armor' }).split(' | ')[1] ?? '';
+
+  assert.equal(classItem('Titan', 'Titan Mark'), 'Legendary Titan Mark');
+  assert.equal(classItem('Hunter', 'Hunter Cloak'), 'Legendary Hunter Cloak');
+  assert.equal(classItem('Warlock', 'Warlock Bond'), 'Legendary Warlock Bond');
+
+  assert.equal(formatItem(cogburn).split(' | ')[1], 'Legendary Titan Helmet');
 });
