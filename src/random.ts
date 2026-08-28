@@ -3,11 +3,13 @@
 //import { formatPerkColumn } from './format.ts';
 import * as logger from './utilities/logger.ts';
 import { getAccessToken } from './auth/session.ts';
-import { getMembershipData, getProfile } from './bungie.ts';
+import { getMembershipData, getProfile, transferItem } from './bungie.ts';
 import { isInstanced } from './types.ts';
-import { filterItems, type ItemFilterOptions } from './inventory.ts';
+import { characterNames, filterItems, type ItemFilterOptions } from './inventory.ts';
 import { formatItems } from './format.ts';
 import { getResolvedItems } from './profile.ts';
+import { pickReplacement } from './transfer.ts';
+import { resolve } from 'node:dns';
 
 /*
 const main = async () => {
@@ -47,8 +49,8 @@ const random = async () => {
 
 
   const filterOptions: ItemFilterOptions = {
-    location: 'Hunter',
-    rarity: 'Exotic'
+    name: 'anarc',
+    location: 'Titan'
   }
 
   const resolvedItems = await getResolvedItems()
@@ -67,6 +69,27 @@ const random = async () => {
   
   const formatted = formatItems(count, items, showPerks)
   logger.print('info', formatted)
+
+  const replacement = pickReplacement(resolvedItems, items[0]!, true)
+
+  if (replacement?.kind === 'weapon') {
+    logger.print('info', `${items[0]?.name}(${items[0]?.power}) on ${items[0]?.location} replaced with ${replacement.name}(${replacement.power} ${replacement.element}) on ${replacement.location}`)
+  }
+
+/*  let hunter: string | undefined
+
+  const charNames = characterNames(profileData)
+  for (const [k, v] of charNames.entries()) {
+    logger.print('info', `key: ${k}, value: ${v}`)
+    if (v === 'Hunter') hunter = k;
+  }
+
+  const item = items[0]
+  if (item && hunter) {
+    logger.print('info', 'Attempting to move truth')
+    const res = await transferItem(membershipType, hunter, item.itemHash, item.itemInstanceId, true)
+    logger.print('info', `${res.response}`)
+  }*/
 }
 
 random();

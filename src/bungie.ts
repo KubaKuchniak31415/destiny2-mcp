@@ -7,6 +7,23 @@ import { getAccessToken } from './auth/session.ts';
 
 const BUNGIE_ROOT = 'https://www.bungie.net/Platform';
 
+export class BungieError extends Error {
+  errorCode: number;
+  errorStatus: string;
+  bungieMessage: string;
+  throttleSeconds: number;
+
+  constructor (msg: string, errorCode: number, errorStatus: string, bungieMessage: string, throttleSeconds: number, options: ErrorOptions = {}) {
+    super(msg, options);
+    this.errorCode = errorCode;
+    this.errorStatus = errorStatus;
+    this.bungieMessage = bungieMessage;
+    this.throttleSeconds = throttleSeconds
+
+    Object.setPrototypeOf(this, BungieError.prototype)
+  }
+}
+
 const bungieFetch = async <T extends z.ZodType>(
   path: string, 
   schema: T,
@@ -15,12 +32,13 @@ const bungieFetch = async <T extends z.ZodType>(
   const headers = {
     'X-API-Key': BUNGIE_API_KEY,
     ...(options?.auth ? {Authorization: `Bearer ${(await getAccessToken()).access_token}`} : {}),
+    ...(options?.body !== undefined ? {'Content-Type': 'application/json'} : {})
   };
 
   const response = await fetch(`${BUNGIE_ROOT}${path}`, {
     headers: headers,
     method: options?.method ?? 'GET',
-    body: options?.body ? JSON.stringify(options.body) : undefined
+    body: options?.body !== undefined ? JSON.stringify(options.body) : undefined
   });
 
   if (!response.ok) {
@@ -36,11 +54,11 @@ const bungieFetch = async <T extends z.ZodType>(
     throw new Error(`Invalid response envelope for ${path}: ${z.prettifyError(envelope.error)}`);
   }
 
-  const { ErrorCode, ErrorStatus, Message} = envelope.data;
+  const { ErrorCode, ErrorStatus, Message, ThrottleSeconds} = envelope.data;
   
   if (ErrorCode !== 1) {
-    logger.print('error', `Error fetching ${path}: ${ErrorCode} - ${ErrorStatus} - ${Message}`);
-    throw new Error(`Error fetching ${path}: ${ErrorCode} - ${ErrorStatus} - ${Message}`);
+    logger.print('error', `Error fetching ${path} ${ErrorCode} - ${ErrorStatus} - ${Message}`);
+    throw new BungieError(`Error fetching ${path}`, ErrorCode, ErrorStatus, Message, ThrottleSeconds ?? 0);
   }
 
   const payload = schema.safeParse(envelope.data.Response);
@@ -63,7 +81,7 @@ const Component = {
   ReusablePlugs: 310,
 } as const;
 
-const getProfile = async(
+const getProfile = async (
   membershipType: number,
   membershipId: string
 ): Promise<Profile> =>
@@ -73,6 +91,65 @@ const getProfile = async(
     { auth: true }
   )
 
+export const transferItem = async (
+  membershipType: number,
+  characterId: string,
+  itemReferenceHash: number,
+  itemId: string,
+  transferToVault: boolean,
+): Promise<{response: number}> => {
+  const body = {
+    itemReferenceHash,
+    stackSize: 1,
+    transferToVault,
+    itemId,
+    characterId,
+    membershipType
+  }
+  const response = await bungieFetch(
+    `/Destiny2/Actions/Items/TransferItem/`, z.number(), {auth: true, body, method: 'POST'}
+  )
+
+  return {response}
+}
+
+export const equipItem = async (
+  membershipType: number,
+  characterId: string,
+  itemId: string
+): Promise<{response: number}> => {
+  const body = {
+    membershipType,
+    characterId,
+    itemId,
+  }
+
+  const response = await bungieFetch(
+    `/Destiny2/Actions/Items/EquipItem/`, z.number(), {auth: true, body, method: 'POST'}
+  )
+
+  return {response}
+}
+
+export const pullFromPostmaster = async (
+  membershipType: number,
+  characterId: string,
+  itemId: string,
+  itemReferenceHash: number,
+): Promise<{response: number}> => {
+  const body = {
+    membershipType,
+    characterId,
+    itemId,
+    itemReferenceHash
+  }
+
+  const response = await bungieFetch(
+    `/Destiny2/Actions/Items/PullFromPostmaster/`, z.number(), {auth:true, body, method: 'POST'}
+  )
+
+  return {response}
+}
 
 const getMembershipData = async (): Promise<{membershipId: string, membershipType: number}> => {
   const {destinyMemberships, primaryMembershipId} = await bungieFetch('/User/GetMembershipsForCurrentUser', membershipSchema, {auth: true})

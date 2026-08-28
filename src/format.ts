@@ -1,3 +1,4 @@
+import { translateErrorCode, type MoveResult } from "./transfer.ts";
 import type { Weapon, PerkColumn, Perk, ResolvedItem} from "./types.ts";
 
 export const ARMOUR_STATS = new Map<number, string>([
@@ -54,7 +55,7 @@ export const formatItem = (item :ResolvedItem, long: boolean = false): string =>
     ? `${item.type.startsWith(item.classType) ? item.type : `${item.classType} ${item.type}`}` 
     : `${item.element} ${item.type} (${item.slot.split(' ')[0]} Slot)`
   
-  const location = item.equipped === true ? `${item.location} (Equipped)` : `${item.location}`
+  const location = item.equipped === true ? `${item.location} (Equipped)` : item.inPostmaster === true ? `${item.location} (PostMaster)` : `${item.location}`
 
   const base = `${item.name} | ${item.rarityName} ${type} | ${item.power ?? '?'} | ${location}${item.kind === 'armour' ? ` | ${statsString}` : ''} | ${item.itemInstanceId}` 
 
@@ -75,7 +76,7 @@ export const formatItems = (count: number,  items: ResolvedItem[], long: boolean
     return 'No items matched the search parameters'
   }
 
-  let formatted = `Name | Rarity type slot | Power | Location (Equipped) | [Armour stats Health/Melee/Grenade/Super/Class/Weapons] | Instance ID\n`
+  let formatted = `Name | Rarity type slot | Power | Location (Equipped)/(Postmaster) | [Armour stats Health/Melee/Grenade/Super/Class/Weapons] | Instance ID\n`
   if (long) {
     formatted += `Perk Columns (* means perk is currently selected)\n`
   }
@@ -83,5 +84,53 @@ export const formatItems = (count: number,  items: ResolvedItem[], long: boolean
 
   formatted += `\nShowing ${items.length} of ${count} items`
 
+  return formatted
+}
+
+export type FormatterContext = {
+  item: ResolvedItem,
+  replacement?: ResolvedItem,
+  evicted?: ResolvedItem,
+  characterNames: Map<string, string>
+}
+
+export const formatTransfer = (res: MoveResult, ctx: FormatterContext): string => {
+  let formatted = ''
+  for (const leg of res.completed) {
+    switch (leg.kind) {
+      case 'equip': 
+        if (leg.reason == 'displace' && ctx.replacement){
+          formatted += `equipped ${ctx.replacement.name}\n`
+        }
+        else{
+          formatted += `equipped ${ctx.item.name}\n`; break;
+        }
+        break;
+      case 'pullFromPostmaster': formatted += `pulled ${ctx.item.name} from Postmaster\n`; break;
+      case 'toVault': 
+        if (leg.eviction && ctx.evicted) {
+          formatted += `RETRYING...\nEviction: Sent ${ctx.evicted.name} to Vault from ${ctx.characterNames.get(leg.from) ?? 'N/A'}\n`
+        } else {
+          formatted += `Sent ${ctx.item.name} to Vault from ${ctx.characterNames.get(leg.from) ?? 'N/A'}\n`
+        }
+          break;
+      case 'fromVault': 
+        if (leg.replacement && ctx.replacement) {
+          formatted += `Replacement: Pulled ${ctx.replacement.name} to ${ctx.characterNames.get(leg.to) ?? 'N/A'} from the vault.\n`
+        } else { 
+          formatted += `Pulled ${ctx.item.name} to ${ctx.characterNames.get(leg.to) ?? 'N/A'} from the vault.\n`
+        }
+        break;
+    }
+  }
+  if (res.failed){
+    const error = res.failed.error
+    const translated = translateErrorCode(res.failed.error.errorCode)
+    if (translated) {
+      formatted += `ERROR: ${error.errorCode} | ${translated.name} ${translated.description ? `| ${translated.description}` : ''} ${[35, 51, 1672].includes(error.errorCode) ? `| ${error.throttleSeconds}` : ''}`
+    } else {
+      formatted += `ERROR: ${error.errorCode} | ${error.errorStatus} | ${error.message}`
+    }
+  } 
   return formatted
 }

@@ -1,6 +1,6 @@
 import type { Index } from './db.ts';
-import type { PerkColumn, Item, InstancedItem, Instance, Profile, ItemStats, ResolvedWeapon, ResolvedArmour, ResolvedBase, ClassType, ResolvedItem, Element, Sockets } from './types.ts';
-import { classTypeSchema, isInstanced } from './types.ts';
+import type { PerkColumn, Item, InstancedItem, Instance, Profile, ItemStats, ResolvedWeapon, ResolvedArmour, ResolvedBase, ClassType, ResolvedItem, Element, Sockets, Slot } from './types.ts';
+import { classTypeSchema, isInstanced, slotSchema } from './types.ts';
 import { TIER_NAMES } from './format.ts';
 import * as z from 'zod/v4'
 
@@ -29,7 +29,7 @@ export type Located = {
   reusablePlugs?: number[]
 };
 
-const BUCKET_MAP = new Map<number, { slot: string; kind: 'weapon' | 'armour' }>([
+const BUCKET_MAP = new Map<number, { slot: Slot; kind: 'weapon' | 'armour' }>([
   [1498876634, { slot: 'Kinetic Weapons', kind: 'weapon' }],
   [2465295065, { slot: 'Energy Weapons', kind: 'weapon' }],
   [953998645, { slot: 'Power Weapons', kind: 'weapon' }],
@@ -39,6 +39,9 @@ const BUCKET_MAP = new Map<number, { slot: string; kind: 'weapon' | 'armour' }>(
   [20886954, { slot: 'Leg Armor', kind: 'armour' }],
   [1585787867, { slot: 'Class Armor', kind: 'armour' }],
 ]);
+
+const POSTMASTER_BUCKET = 215593132
+
 
 export const gearResolver = (located: Located, index: Index, names: Map<string, string>): ResolvedWeapon | ResolvedArmour | null  => {
   const gear = index.getGear(located.item.itemHash);
@@ -55,6 +58,7 @@ export const gearResolver = (located: Located, index: Index, names: Map<string, 
   if (!bucket){
     return null
   }
+
   const resolvedBase: ResolvedBase = {
     itemHash: located.item.itemHash,
     itemInstanceId: located.item.itemInstanceId,
@@ -66,7 +70,8 @@ export const gearResolver = (located: Located, index: Index, names: Map<string, 
     location,
     equipped: located.equipped,
     characterId: characterId,
-    power: located.instance?.primaryStat?.value
+    power: located.instance?.primaryStat?.value,
+    inPostmaster: located.item.bucketHash === POSTMASTER_BUCKET
   }
 
   if (bucket.kind === 'weapon') {
@@ -177,7 +182,7 @@ export const flattenProfile = (
 
 
 export const itemFilterSchema = z.object({
-  slot: z.enum(['Kinetic Weapons', 'Energy Weapons', 'Power Weapons', 'Helmet', 'Gauntlets', 'Chest Armor', 'Leg Armor', 'Class Armor']).optional(),
+  slot: slotSchema.optional(),
   location: z.enum(['Hunter', 'Titan', 'Warlock', 'Vault']).optional().describe(
     'Where the item currently sits: a character, named by class, or the vault. e.g. "my hunter" means location: "Hunter"'
   ),
@@ -198,6 +203,9 @@ export const itemFilterSchema = z.object({
   equipped: z.boolean().optional().describe(
     'Is the item currently equipped on any character? Use with location for queries such as "What is my hunter currently using?"'
   ),
+  inPostmaster: z.boolean().optional().describe(
+    `Is the item currently in a characters postmaster? Use with location to answer queries like 'What's in my hunters postmaster' (vault doesnt have a postmaster)`
+  ),
   limit: z.int().default(30).describe(
     'Amount of items returned, default is 30. Raise only if user wants to see a full list'
   ),
@@ -206,9 +214,21 @@ export const itemFilterSchema = z.object({
   ),
 })
 
-export type ItemFilterOptions = z.input<typeof itemFilterSchema>
+export type Location = z.infer<typeof itemFilterSchema>['location']
 
-export type ItemSortingOptions = 'Power' | 'Name'| 'Rarity'
+export type ItemFilterOptions = z.input<typeof itemFilterSchema> & { characterId?: string, itemInstanceId?: string}
+
+type Comparator = (a: ResolvedItem, b: ResolvedItem) => number;
+
+const COMPARATORS = {
+  Power:  (a, b) => (b.power ?? 0) - (a.power ?? 0),
+  LowPower: (a,b) => (a.power ?? 0) - (b.power ?? 0),
+  Name:   (a, b) => a.name.localeCompare(b.name),
+  Rarity: (a, b) => b.rarity - a.rarity,
+  NonExotic: (a, b) => (a.rarity === 6 ? 1 : 0) - (b.rarity === 6 ? 1 : 0),
+} satisfies Record<string, Comparator>;
+
+export type ItemSortingOptions = keyof typeof COMPARATORS
 
 const hasPerks = (weapon: ResolvedWeapon, perkNames: string[]): boolean => {
   if (!weapon.rolledPerks) return false;
@@ -233,15 +253,29 @@ const hasPerks = (weapon: ResolvedWeapon, perkNames: string[]): boolean => {
   return true
 }
 
-export const filterItems = (items: ResolvedItem[], filterOptions: ItemFilterOptions = {}, sortingOptions: ItemSortingOptions = 'Power'): {count: number, items: ResolvedItem[]} => {
+const compose = (...comparators: Comparator[]): Comparator => (a, b) => {
+  for (const cmp of comparators) {
+    const result = cmp(a, b);
+    if (result !== 0) return result;
+  }
+  return 0;
+}
+
+
+export const filterItems = (items: ResolvedItem[], filterOptions: ItemFilterOptions = {}, sortingOptions: ItemSortingOptions | ItemSortingOptions[] = 'Power'): {count: number, items: ResolvedItem[]} => {
   items = [...items];
 
+  
   if (filterOptions.slot) {
     items = items.filter(i => i.slot === filterOptions.slot)
   }
 
   if (filterOptions.location) {
     items = items.filter(i => i.location === filterOptions.location)
+  }
+
+  if (filterOptions.characterId) {
+    items = items.filter(i => i.characterId === filterOptions.characterId)
   }
 
   if (filterOptions.classType) {
@@ -274,16 +308,16 @@ export const filterItems = (items: ResolvedItem[], filterOptions: ItemFilterOpti
   if (filterOptions.equipped !== undefined) {
     items = items.filter(i => i.equipped === filterOptions.equipped)
   }
-
-
-
-
-
-  switch (sortingOptions) {
-    case 'Name': items.sort((a,b) => a.name.localeCompare(b.name)); break;
-    case 'Power': items.sort((a,b) => (b.power ?? 0) - (a.power ?? 0)); break;
-    case 'Rarity': items.sort((a,b) => (b.rarity) - (a.rarity)); break;
+  if (filterOptions.inPostmaster !== undefined) {
+    items = items.filter(i => i.inPostmaster === filterOptions.inPostmaster)
   }
+  if (filterOptions.itemInstanceId) {
+    items = items.filter(i => i.itemInstanceId === filterOptions.itemInstanceId)
+  }
+  
+
+  const keys = [sortingOptions].flat()
+  items.sort(compose(...keys.map(k => COMPARATORS[k])))
 
   const count = items.length
   

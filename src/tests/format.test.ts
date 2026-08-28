@@ -138,6 +138,7 @@ const lostSignal: ResolvedWeapon = {
   slot: 'Kinetic Weapons',
   location: 'Titan',
   equipped: false,
+  inPostmaster: false,
   power: 504,
   element: 'Stasis',
 };
@@ -153,6 +154,7 @@ const cogburn: ResolvedArmour = {
   slot: 'Helmet',
   location: 'Titan',
   equipped: true,
+  inPostmaster: false,
   power: 516,
   classType: 'Titan',
   stats: { health: -5, melee: 0, grenade: 25, super: 30, class: 0, weapons: 30 },
@@ -281,6 +283,7 @@ const kindledOrchid: ResolvedWeapon = {
   slot: 'Energy Weapons',
   location: 'Hunter',
   equipped: true,
+  inPostmaster: false,
   power: 510,
   element: 'Void',
   rolledPerks: [

@@ -4,7 +4,8 @@ export const envelopeSchema = z.object({
   ErrorCode: z.number(),
   ErrorStatus: z.string(),
   Message: z.string(),
-  Response: z.unknown()
+  Response: z.unknown(),
+  ThrottleSeconds: z.number().optional()
 });
 
 export const manifestSchema = z.object({
@@ -150,6 +151,10 @@ export const profileSchema = z.object({
   }),
 });
 
+export const slotSchema = z.enum(['Kinetic Weapons', 'Energy Weapons', 'Power Weapons', 'Helmet', 'Gauntlets', 'Chest Armor', 'Leg Armor', 'Class Armor'])
+
+export type Slot = z.infer<typeof slotSchema>
+
 export type ResolvedBase = {
   itemHash: number;
   itemInstanceId: string;
@@ -157,11 +162,12 @@ export type ResolvedBase = {
   type: string;
   rarity: number;
   rarityName: string;
-  slot: string;
+  slot: Slot;
   location: string;
   equipped: boolean;
   characterId?: string;
-  power?: number
+  power?: number;
+  inPostmaster: boolean;
 }
 
 export type SetBonus = {

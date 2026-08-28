@@ -6,7 +6,14 @@ import type { Profile, ResolvedItem } from "./types.ts";
 
 
 const TTL_MS = 30_000;
-let membership : {membershipId: string, membershipType: number} | undefined
+type Membership = {membershipId: string, membershipType: number}
+let membership : Membership | undefined
+
+export const getMembership = async (): Promise<Membership> => {
+  membership ??= await getMembershipData()
+
+  return membership
+}
 
 const makeProfile = async (): Promise<Profile>  => {
   if (membership === undefined) membership = await getMembershipData();
