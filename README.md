@@ -54,8 +54,8 @@ they're wrong, and the errors they produce are not obvious:
 | Field | Value |
 |---|---|
 | **Application Name** | Anything. `My Destiny MCP` is fine |
-| **Website** | Anything. Your GitHub profile, or `https://example.com` |
-| **OAuth Client Type** | **Confidential** — not Public |
+| **Website** | Anything e.g. 'example.com'. Can also leave blank |
+| **OAuth Client Type** | **Confidential** not Public |
 | **Redirect URL** | `https://127.0.0.1:7777/callback` |
 | **Scope** | *- Read your Destiny 2 information* <br> *- Move or equip Destiny gear and other items.* |
 
@@ -80,12 +80,12 @@ Save. The page now shows three values:
 The client secret only appears once the app is saved as Confidential. If you can't
 find it, that setting is why.
 
-Paste all three into Claude, then **fully quit and reopen Claude Desktop**. Check your
+Paste all three into Claude, click enable, then **fully quit and reopen Claude Desktop**. Check your
 system tray and close it from the icon there.
 
 ## 3. First run
 
-Ask Claude something like *"what's in my Destiny vault?"*. Three things happen once,
+Ask Claude something like *"What's equipped on my hunter?"*. Three things happen once,
 in this order:
 
 **It downloads Destiny's item database.** About 350 MB, unpacked into
