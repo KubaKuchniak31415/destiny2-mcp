@@ -10,11 +10,12 @@
     "doc": "docs"
   },
   "scripts": {
-    "tsc": "tsc",
-    "random": "tsc && node --env-file=.env src/random.ts",
+    "typecheck": "tsc",
     "lint": "eslint .",
     "test": "node --test --env-file=.env.test",
-    "start": "node --env-file=.env src/index.ts"
+    "start": "node --env-file=.env src/index.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "bundle": "rm -rf build && npm run build && cp manifest.json package.json package-lock.json build/ && npm ci --omit=dev --prefix build && npx @anthropic-ai/mcpb pack build destiny2-mcp.mcpb"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

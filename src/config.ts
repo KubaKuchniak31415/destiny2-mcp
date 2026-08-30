@@ -29,7 +29,7 @@ const required = (name: typeof REQUIRED[number]): string => {
 
 const describeMissing = (missing: string[]): string => [
   `Destiny 2 MCP is not configured. Missing: ${missing.join(', ')}`,
-  `Add them to the "env" block of ${CLAUDE_CONFIG}`,
+  `Open Claude Desktop -> Settings -> Extensions -> Destiny 2 and fill in the missing values`,
   `Then fully quit and reopen Claude Desktop. README step 2 explains where to get each value`,
 ].join('\n')
 
@@ -38,7 +38,6 @@ const configHome =
     ? process.env.APPDATA ?? join(homedir(), '.config')
     : process.env.XDG_CONFIG_HOME ?? join(homedir(), '.config');
 
-const CLAUDE_CONFIG = join(configHome, 'Claude', 'claude_desktop_config.json')
 
 export const CONFIG_DIR = join(configHome, 'destiny2-mcp');
 

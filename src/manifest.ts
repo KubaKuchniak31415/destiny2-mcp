@@ -77,7 +77,7 @@ const removeStaleFiles = async (keep: string[]): Promise<void> => {
 };
 
 const ensureManifest = async (): Promise<{ database: string; index: string }> => {
-  await mkdir(MANIFEST_DIR, { recursive: true, mode: '0o700' });
+  await mkdir(MANIFEST_DIR, { recursive: true, mode: 0o700 });
 
   const manifest = await getManifest();
   const { version } = manifest;

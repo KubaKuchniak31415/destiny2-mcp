@@ -1,0 +1,40 @@
+{
+  "manifest_version": "0.3",
+  "name": "destiny2-mcp",
+  "display_name": "Destiny 2",
+  "version": "1.0.0",
+  "description": "Search your Destiny 2 vault and characters and move or equip items.",
+  "author": { "name": "Kuba" },
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.js"],
+      "env": {
+        "BUNGIE_API_KEY":       "${user_config.bungie_api_key}",
+        "BUNGIE_CLIENT_ID":     "${user_config.bungie_client_id}",
+        "BUNGIE_CLIENT_SECRET": "${user_config.bungie_client_secret}",
+        "MCPB_BUNDLE": "1"
+      }
+    }
+  },
+  "user_config": {
+    "bungie_api_key": {
+      "type": "string", "title": "Bungie API Key", "sensitive": true, "required": true,
+      "description": "From your application at bungie.net/en/Application"
+    },
+    "bungie_client_id": {
+      "type": "string", "title": "OAuth client_id", "sensitive": true, "required": true,
+      "description": "Shown on the same page, under OAuth"
+    },
+    "bungie_client_secret": {
+      "type": "string", "title": "OAuth client_secret", "sensitive": true, "required": true,
+      "description": "Only appears if the app's OAuth Client Type is Confidential"
+    }
+  },
+  "compatibility": {
+    "platforms": ["win32", "darwin"],
+    "runtimes": { "node": ">=24.0.0" }
+  }
+}

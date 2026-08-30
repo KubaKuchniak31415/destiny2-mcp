@@ -5,3 +5,6 @@ node_modules/
 CLAUDE.md
 /manifest
 /.tmp-test-config
+dist/
+build/
+*.mcpb
