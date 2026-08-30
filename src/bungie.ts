@@ -1,6 +1,6 @@
 import * as logger from './utilities/logger.ts';
 import * as z from 'zod/v4';
-import { BUNGIE_API_KEY } from './config.ts';
+import { config } from './config.ts';
 import { envelopeSchema, manifestSchema, membershipSchema, profileSchema } from './types.ts';
 import type { Manifest, Profile} from './types.ts'
 import { getAccessToken, ReauthRequired } from './auth/session.ts';
@@ -30,7 +30,7 @@ const bungieFetch = async <T extends z.ZodType>(
   options?: {auth?: boolean; method?: string; body?: unknown}
 ): Promise<z.infer<T>> => {
   const headers = {
-    'X-API-Key': BUNGIE_API_KEY,
+    'X-API-Key': config.apiKey,
     ...(options?.auth ? {Authorization: `Bearer ${(await getAccessToken()).access_token}`} : {}),
     ...(options?.body !== undefined ? {'Content-Type': 'application/json'} : {})
   };

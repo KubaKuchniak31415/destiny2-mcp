@@ -2,6 +2,7 @@ import {McpServer} from "@modelcontextprotocol/server";
 import { serveStdio } from "@modelcontextprotocol/server/stdio";
 import {getManifestVersion} from "./bungie.ts";
 import * as z from "zod/v4";
+import * as logger from './utilities/logger.ts'
 import { getIndex } from "./db.ts";
 import { registerWeaponTools } from "./tools/weapons.ts";
 import { registerAccountTools } from "./tools/account.ts";
@@ -30,5 +31,7 @@ const createServer = (): McpServer => {
   return server;
 }
 
-void getIndex();
+void getIndex().catch((err: unknown) => {
+  logger.print('error', `Manifest prewarn failed: ${err instanceof Error ? err.message : String(err)}`)
+});
 serveStdio(createServer);

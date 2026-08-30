@@ -1,9 +1,7 @@
-import { BUNGIE_CLIENT_ID, BUNGIE_CLIENT_SECRET, BUNGIE_REDIRECT_URI } from '../config.ts';
+import { config, BUNGIE_REDIRECT_URI } from '../config.ts';
 import type {Token, TokenResponse} from '../types.ts';
 import { tokenResponseSchema } from '../types.ts';
 import * as z from 'zod/v4';
-import { BUNGIE_API_KEY } from '../config.ts';
-
 const oAuthErrorSchema = z.object({
   error: z.string(),
   error_description: z.string().optional(),
@@ -13,7 +11,7 @@ const oAuthErrorSchema = z.object({
 
 const buildAuthorizeUrl = (state: string): string => {
   const params = new URLSearchParams({
-    client_id: BUNGIE_CLIENT_ID,
+    client_id: config.clientId,
     response_type: 'code',
     state: state,
     redirect_uri: BUNGIE_REDIRECT_URI,
@@ -35,14 +33,14 @@ const toToken = (response: TokenResponse, now: number): Token => {
 
 const postToken = async (body: URLSearchParams): Promise<Token> => {
   const endpoint = `https://www.bungie.net/platform/app/oauth/token/`;
-  const credentials = Buffer.from(`${BUNGIE_CLIENT_ID}:${BUNGIE_CLIENT_SECRET}`)
+  const credentials = Buffer.from(`${config.clientId}:${config.clientSecret}`)
   .toString('base64');
 
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
       "Authorization": `Basic ${credentials}`,
-      "X-API-Key": BUNGIE_API_KEY
+      "X-API-Key": config.apiKey
     },
     body: body
   })

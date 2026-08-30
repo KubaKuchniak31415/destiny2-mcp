@@ -14,7 +14,7 @@ const waitForCode = async (expectedState: string, timeoutMs: number): Promise<st
   return new Promise<string>((resolve, reject) => {
     const server = https.createServer(serverOptions, (req, res) => {
 
-      const finish = (fn: () => void ) => { clearTimeout(timer); server.close(); server.closeAllConnections(); fn();}
+      const finish = (fn: () => void ) => { clearTimeout(timer); server.close(); server.close(); fn();}
 
       const url = new URL(req.url ?? '/', `https://127.0.0.1:${REDIRECT_PORT}`);
       if (url.pathname !== '/callback') {
@@ -28,22 +28,26 @@ const waitForCode = async (expectedState: string, timeoutMs: number): Promise<st
         const error = url.searchParams.get('error')
         if (error) {
           const errorDescription = url.searchParams.get('error_description')
+          res.writeHead(400, {'Content-Type': 'text/html; charset=utf-8', 'Connection': 'close'})
           res.end(`Bungie Denied Authorization: ${errorDescription ?? error}`)
           finish(() => reject(new Error(`Bungie Denied Authorization: ${errorDescription ?? error}`)));
           return;
         }
+        res.writeHead(500, {'Content-Type': 'text/html; charset=utf-8', 'Connection': 'close'})
         res.end("Couldnt get OAuth code");
         finish(() => reject(new Error("Couldnt get OAuth code")));
         return;
       }
       
       if (state !== expectedState) {
-        finish(() => reject(new Error("OAuth State mismatch.")))
+        res.writeHead(500, {'Content-Type': 'text/html; charset=utf-8', 'Connection': 'close'})
         res.end("OAuth State Mismatch.");
+        finish(() => reject(new Error("OAuth State mismatch.")))
         return;
       }
 
-      res.end("You can close this window")
+      res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8', 'Connection': 'close'})
+      res.end("You can close this window", () => server.closeAllConnections())
       finish(() => resolve(code))
       
     });
