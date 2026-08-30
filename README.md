@@ -38,7 +38,8 @@ Download `destiny2-mcp.mcpb` from the
 In Claude Desktop: **Settings -> Extensions -> Advanced settings -> Install extension…**
 and pick the file.
 
-It will ask for three values. Leave that dialog open for now.
+It will ask for three values. Leave that dialog open for now. Once you see the 
+screen below proceed to step 2.
 
 ![The Claude Desktop install dialog, showing the three empty configuration fields](assets/install-extension.png)
 
@@ -67,7 +68,8 @@ to reauthenticate every hour. Only Confidential is supported.
 **Redirect URL:** it must match character for character, including `https`
 and the port.
 
-Save. The page now shows three values:
+Now click 'Create New App'. Once the app is created The page should show 
+these three values:
 
 ![The saved application page, showing where the API Key, OAuth client_id and client_secret appear](assets/bungie-app-keys.png)
 
