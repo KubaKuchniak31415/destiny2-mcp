@@ -4,7 +4,8 @@ import { withAuth } from "../utilities/withAuth.ts"
 import { characterNames, filterItems, itemFilterSchema } from "../inventory.ts";
 import { getCachedProfile, getResolvedItems } from "../profile.ts";
 import { formatItems, formatTransfer, type FormatterContext } from "../format.ts";
-import { moveItem, pickEviction, pickReplacement, planRoute, resolveDestination, type Leg } from "../transfer.ts";
+import { moveItem, pickEviction, pickReplacement, planRoute, resolveDestination, type Leg, type MoveResult } from "../transfer.ts";
+import type { ResolvedItem } from "../types.ts";
 
 export const registerInventoryTools = (server: McpServer) => {
   server.registerTool('searchItems', {
@@ -116,37 +117,49 @@ export const registerInventoryTools = (server: McpServer) => {
         return {content: [{type: 'text', text: `Item already at ${destination}`}]}
       } 
 
-      const res = await moveItem(legs)
+      const SLOT_FULL = new Set([1642, 1637]);
+      const MAX_EVICTIONS = 2;
 
-      if (res.failed) {
-        if (res.failed.error.errorCode === 1642 || res.failed.error.errorCode === 1637) {
-          const itemToEvict = pickEviction(resolvedItems, destinationId, item)
-          if (!itemToEvict) return {content: [{type: 'text', text: `${formatTransfer(res, ctx)}`}]}
-          if (!itemToEvict.characterId) throw new Error(`Couldn't get character ID from item`)
-          const evictLeg: Leg = {
-            kind: 'toVault',
-            itemHash: itemToEvict.itemHash,
-            itemId: itemToEvict.itemInstanceId,
-            from: itemToEvict.characterId,
-            eviction: true
-          }
-          ctx.evicted = itemToEvict
-          const remainingLegs = legs.slice(res.completed.length)
-          const retry = await moveItem([evictLeg, ...remainingLegs])
-          return{
-            content: [{type: 'text', text: `${formatTransfer(res, ctx)}\n${formatTransfer(retry, ctx)}`}]
-          }
-        }
+      const attempts: MoveResult[] = []
+      const evicted = new Map<string, ResolvedItem>()
+      let pending = legs;
+
+      for (let n = 0 ; ; n++) {
+        const res = await moveItem(pending);
+        attempts.push(res);
+        if (!res.failed || !SLOT_FULL.has(res.failed.error.errorCode) || n >= MAX_EVICTIONS) break;
+
+        const full = characterOfFailedLeg(res.failed.leg);
+        if (!full) break;
+
+        const victim = pickEviction(resolvedItems, full, item)
+        if (!victim?.characterId) break
+        evicted.set(victim.itemInstanceId, victim)
+        ctx.evicted = evicted
+
+        pending = [
+          {kind: 'toVault', itemHash: victim.itemHash, itemId: victim.itemInstanceId, from: victim.characterId, eviction: true},
+          ...pending.slice(res.completed.length)
+        ]
       }
+
       return {
         content: [
           {
             type: 'text',
-            text: `${formatTransfer(res, ctx)}`,
-          },
-        ],
+            text: `${attempts.map(a => formatTransfer(a, ctx)).join('\n')}`
+          }
+        ]
       }
     }),
 )}
 
+const characterOfFailedLeg = (leg: Leg): string | undefined => {
+  switch (leg.kind) {
+    case 'pullFromPostmaster': return leg.characterId
+    case 'fromVault': return leg.to
+    case 'equip': return leg.characterId
+    case 'toVault': return undefined // vault full cant do anything
+  }
+}
 

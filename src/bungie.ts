@@ -3,7 +3,7 @@ import * as z from 'zod/v4';
 import { BUNGIE_API_KEY } from './config.ts';
 import { envelopeSchema, manifestSchema, membershipSchema, profileSchema } from './types.ts';
 import type { Manifest, Profile} from './types.ts'
-import { getAccessToken } from './auth/session.ts';
+import { getAccessToken, ReauthRequired } from './auth/session.ts';
 
 const BUNGIE_ROOT = 'https://www.bungie.net/Platform';
 
@@ -41,20 +41,24 @@ const bungieFetch = async <T extends z.ZodType>(
     body: options?.body !== undefined ? JSON.stringify(options.body) : undefined
   });
 
-  if (!response.ok) {
-    logger.print('error', `Error fetching ${path}: ${response.status} ${response.statusText}`);
-    throw new Error(`Error fetching ${path}: ${response.status} ${response.statusText}`);
-  }
+  const data = await response.json().catch(() => undefined);
 
-  const data = await response.json();
-
-  const envelope = envelopeSchema.safeParse(data);
-  if (!envelope.success) {
-    logger.print('error', `Invalid response envelope for ${path}: ${z.prettifyError(envelope.error)}`);
-    throw new Error(`Invalid response envelope for ${path}: ${z.prettifyError(envelope.error)}`);
+  const envelope = data === undefined ? undefined : envelopeSchema.safeParse(data);
+  if (!envelope?.success) {
+    if (!response.ok) {
+      logger.print('error', 'Error fetching ${path}: ${response.status} ${response.statusText}')
+      throw new Error(`Error fetching ${path}: ${response.status} ${response.statusText}`)
+    }
+    const detail = envelope ? z.prettifyError(envelope.error) : 'response body was not JSON'
+    throw new Error(`Invalid response envelope for ${path}: ${detail}`);
   }
 
   const { ErrorCode, ErrorStatus, Message, ThrottleSeconds} = envelope.data;
+
+  if (ErrorCode === 99) {
+    logger.print('error', `Token has been invalidated`)
+    throw new ReauthRequired('Token has been invalidated')
+  }
   
   if (ErrorCode !== 1) {
     logger.print('error', `Error fetching ${path} ${ErrorCode} - ${ErrorStatus} - ${Message}`);

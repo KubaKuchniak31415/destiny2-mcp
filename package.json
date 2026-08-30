@@ -11,22 +11,22 @@
   },
   "scripts": {
     "tsc": "tsc",
-    "dev": "concurrently \"tsc --watch\" \"node --watch --experimental-transform-types src/index.ts\"",
     "random": "tsc && node --env-file=.env src/random.ts",
     "lint": "eslint .",
-    "test": "node --test --env-file=.env.test"
+    "test": "node --test --env-file=.env.test",
+    "start": "node --env-file=.env src/index.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/node": "^26.1.2",
     "@types/yauzl": "^3.4.0",
     "eslint": "^10.8.0",
-    "selfsigned": "^5.5.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.65.0"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",
+    "selfsigned": "^5.5.0",
     "yauzl": "^3.4.0",
     "zod": "^4.4.3"
   }

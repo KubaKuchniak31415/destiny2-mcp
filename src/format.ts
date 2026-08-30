@@ -90,7 +90,7 @@ export const formatItems = (count: number,  items: ResolvedItem[], long: boolean
 export type FormatterContext = {
   item: ResolvedItem,
   replacement?: ResolvedItem,
-  evicted?: ResolvedItem,
+  evicted?: Map<string, ResolvedItem>,
   characterNames: Map<string, string>
 }
 
@@ -108,8 +108,9 @@ export const formatTransfer = (res: MoveResult, ctx: FormatterContext): string =
         break;
       case 'pullFromPostmaster': formatted += `pulled ${ctx.item.name} from Postmaster\n`; break;
       case 'toVault': 
-        if (leg.eviction && ctx.evicted) {
-          formatted += `RETRYING...\nEviction: Sent ${ctx.evicted.name} to Vault from ${ctx.characterNames.get(leg.from) ?? 'N/A'}\n`
+        if (leg.eviction && ctx.evicted?.has(leg.itemId)) {
+          const evictedName = ctx.evicted.get(leg.itemId)?.name
+          formatted += `RETRYING...\nEviction: Sent ${evictedName} to Vault from ${ctx.characterNames.get(leg.from) ?? 'N/A'}\n`
         } else {
           formatted += `Sent ${ctx.item.name} to Vault from ${ctx.characterNames.get(leg.from) ?? 'N/A'}\n`
         }

@@ -145,8 +145,9 @@ export const moveItem = async (legs: Leg[]): Promise<MoveResult> => {
     } catch (err) {
       if (!(err instanceof BungieError)) throw err;
       return {completed, failed: {leg, error: err}}
+    } finally {
+      invalidateProfile();
     }
-    invalidateProfile();
     completed.push(leg);
   }
 
