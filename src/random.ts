@@ -3,13 +3,12 @@
 //import { formatPerkColumn } from './format.ts';
 import * as logger from './utilities/logger.ts';
 import { getAccessToken } from './auth/session.ts';
-import { getMembershipData, getProfile, transferItem } from './bungie.ts';
+import { getMembershipData, getProfile } from './bungie.ts';
 import { isInstanced } from './types.ts';
-import { characterNames, filterItems, type ItemFilterOptions } from './inventory.ts';
+import { filterItems, type ItemFilterOptions } from './inventory.ts';
 import { formatItems } from './format.ts';
 import { getResolvedItems } from './profile.ts';
 import { pickReplacement } from './transfer.ts';
-import { resolve } from 'node:dns';
 
 /*
 const main = async () => {

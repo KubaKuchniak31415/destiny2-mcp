@@ -130,7 +130,7 @@ export const formatTransfer = (res: MoveResult, ctx: FormatterContext): string =
     if (translated) {
       formatted += `ERROR: ${error.errorCode} | ${translated.name} ${translated.description ? `| ${translated.description}` : ''} ${[35, 51, 1672].includes(error.errorCode) ? `| ${error.throttleSeconds}` : ''}`
     } else {
-      formatted += `ERROR: ${error.errorCode} | ${error.errorStatus} | ${error.message}`
+      formatted += `ERROR: ${error.errorCode} | ${error.errorStatus} | ${error.bungieMessage}`
     }
   } 
   return formatted

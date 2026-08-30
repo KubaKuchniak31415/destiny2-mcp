@@ -1,5 +1,7 @@
 
+import { join } from "node:path";
 import { BungieError, equipItem, pullFromPostmaster, transferItem } from "./bungie.ts";
+import { CONFIG_DIR } from "./config.ts";
 import { filterItems, type ItemFilterOptions } from "./inventory.ts"
 import { getMembership, invalidateProfile } from "./profile.ts";
 import type { Profile, ResolvedItem } from "./types.ts"
@@ -122,6 +124,10 @@ export const ERROR_CODE_MAP = new Map<number, TransferError>([
   [1672, {name: 'throttling'}],
   [1660, {name: 'DestinyItemNotTransferrable'}],
   [1655, {name: 'DestinyCanOnlyEquipInGame', description: 'in an activity'}],
+  [2108, {name: 'AccessNotPermittedByApplicationScope', 
+    description: `Your bungie app is missing the 'Move and equip destiny gear and other items' scope. ` +
+                 `Add it at https://www.bungie.net/en/Application, then delete ` +
+                 `${join(CONFIG_DIR, 'tokens.json')} and reauthorise.`}],
 ])
 
 export const translateErrorCode = (errorCode: number): TransferError | undefined => 

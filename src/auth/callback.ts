@@ -1,6 +1,6 @@
 import https from 'node:https';
 import { ensureCert } from './cert.ts';
-import { REDIRECT_PORT } from '../config.ts';
+import { BUNGIE_REDIRECT_URI, REDIRECT_PORT } from '../config.ts';
 
 const waitForCode = async (expectedState: string, timeoutMs: number): Promise<string> => {
   const certData = await ensureCert();
@@ -55,7 +55,7 @@ const waitForCode = async (expectedState: string, timeoutMs: number): Promise<st
     const timer = setTimeout(() => {
       server.close();
       server.closeAllConnections();
-      reject(new Error('Timed out waiting for OAuth callback'));
+      reject(new Error(`Timed out waiting for OAuth callback. Make sure the registered bungie apps redirect URL matches ${BUNGIE_REDIRECT_URI}`));
     }, timeoutMs);
     server.on('error', (err) => {
       clearTimeout(timer);

@@ -1,11 +1,11 @@
 {
   "name": "destiny2-mcp",
+  "engines": {"node": ">=24.0.0"},
   "version": "1.0.0",
   "description": "An MCP server for destiny 2 inventory management",
   "license": "ISC",
   "author": "",
   "type": "module",
-  "main": "index.js",
   "directories": {
     "doc": "docs"
   },

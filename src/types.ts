@@ -195,3 +195,9 @@ export type ResolvedArmour = ResolvedBase & { kind: 'armour'; stats: ArmourStats
 export type ResolvedItem = ResolvedWeapon | ResolvedArmour;
 
 export type Profile = z.infer<typeof profileSchema>
+
+
+export const publicClientSchema = z.object({
+  access_token: z.string(),
+  refresh_token: z.string().optional()
+})

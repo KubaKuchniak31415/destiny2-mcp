@@ -7,13 +7,13 @@ import { getManifest } from "./bungie.ts";
 import { extract } from "./unzip.ts";
 import * as logger from "./utilities/logger.ts";
 import { buildWeaponIndex } from "./weaponIndex.ts";
+import { CONFIG_DIR } from "./config.ts";
 
 const BUNGIE_ROOT = 'https://www.bungie.net';
 const INDEX_SCHEMA = 2;
 
-// Resolved from the module, not the cwd: MCP clients launch the server from
-// wherever they happen to be.
-const MANIFEST_DIR = join(import.meta.dirname, '..', 'manifest');
+
+const MANIFEST_DIR = join(CONFIG_DIR, 'manifest');
 
 const exists = async (path: string): Promise<boolean> => {
   try {
@@ -77,7 +77,7 @@ const removeStaleFiles = async (keep: string[]): Promise<void> => {
 };
 
 const ensureManifest = async (): Promise<{ database: string; index: string }> => {
-  await mkdir(MANIFEST_DIR, { recursive: true });
+  await mkdir(MANIFEST_DIR, { recursive: true, mode: '0o700' });
 
   const manifest = await getManifest();
   const { version } = manifest;
