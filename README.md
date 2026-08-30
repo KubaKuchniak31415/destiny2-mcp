@@ -1,5 +1,5 @@
 # Destiny Item MCP
-Search your vault and move/equip gear in plain language
+Search your vault and move/equip gear in plain english
 
 
 ```
