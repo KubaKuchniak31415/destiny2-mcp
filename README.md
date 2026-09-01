@@ -1,4 +1,8 @@
 # Destiny Item MCP
+[![CI](https://github.com/KubaKuchniak31415/destiny2-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/KubaKuchniak31415/destiny2-mcp/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/KubaKuchniak31415/destiny2-mcp)](https://github.com/KubaKuchniak31415/destiny2-mcp/releases/latest)
+[![License: ISC](https://img.shields.io/github/license/KubaKuchniak31415/destiny2-mcp)](LICENSE)
+
 Search your vault and move/equip gear in plain english
 
 
