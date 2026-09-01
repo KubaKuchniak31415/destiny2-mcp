@@ -1,0 +1,1 @@
+process.env.XDG_CONFIG_HOME = './.tmp-test-config';
