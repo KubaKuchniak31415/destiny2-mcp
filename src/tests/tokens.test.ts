@@ -124,14 +124,18 @@ test('writeTokens leaves no temporary file behind', async () => {
   assert.deepEqual(await readdir(TOKENS_DIR), ['tokens.json']);
 });
 
-test('the token file is owner-only and so is its directory', async () => {
-  // tokens.json holds a 90-day credential. This regresses silently — nothing fails, the file is
-  // just readable by every user on the machine — so it is asserted rather than eyeballed.
-  await writeTokens(validToken);
+test(
+  'the token file is owner-only and so is its directory',
+  { skip: process.platform === 'win32' ? 'POSIX file mode is not meaningful on Windows/NTFS' : false },
+  async () => {
+    // tokens.json holds a 90-day credential. This regresses silently — nothing fails, the file is
+    // just readable by every user on the machine — so it is asserted rather than eyeballed.
+    await writeTokens(validToken);
 
-  assert.equal(await modeOf(TOKENS_PATH), 0o600);
-  assert.equal(await modeOf(TOKENS_DIR), 0o700);
-});
+    assert.equal(await modeOf(TOKENS_PATH), 0o600);
+    assert.equal(await modeOf(TOKENS_DIR), 0o700);
+  },
+);
 
 test('clearTokens removes the file', async () => {
   await writeTokens(validToken);
