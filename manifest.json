@@ -4,7 +4,7 @@
   "display_name": "Destiny 2",
   "version": "1.0.0",
   "description": "Search your Destiny 2 vault and characters and move or equip items.",
-  "author": { "name": "Kuba" },
+  "author": { "name": "Kuba Kuchniak" },
   "server": {
     "type": "node",
     "entry_point": "server/index.js",

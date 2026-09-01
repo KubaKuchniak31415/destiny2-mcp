@@ -46,7 +46,7 @@ const bungieFetch = async <T extends z.ZodType>(
   const envelope = data === undefined ? undefined : envelopeSchema.safeParse(data);
   if (!envelope?.success) {
     if (!response.ok) {
-      logger.print('error', 'Error fetching ${path}: ${response.status} ${response.statusText}')
+      logger.print('error', `Error fetching ${path}: ${response.status} ${response.statusText}`)
       throw new Error(`Error fetching ${path}: ${response.status} ${response.statusText}`)
     }
     const detail = envelope ? z.prettifyError(envelope.error) : 'response body was not JSON'

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "An MCP server for destiny 2 inventory management",
   "license": "ISC",
-  "author": "",
+  "author": "Kuba Kuchniak",
   "type": "module",
   "directories": {
     "doc": "docs"

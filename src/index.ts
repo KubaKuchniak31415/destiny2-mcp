@@ -12,7 +12,7 @@ const createServer = (): McpServer => {
 
   const server = new McpServer({
     name: "destiny2-mcp",
-    version: "0.1.0",
+    version: "1.0.0",
   })
 
   registerWeaponTools(server);
